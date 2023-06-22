@@ -1,0 +1,151 @@
+@include('frontend.layouts.header')
+@include('frontend.layouts.nav')
+
+
+
+
+<!--Start breadcrumb area-->     
+<section class="breadcrumb-area" style="background-image: url({{ asset('frontend/img/banner.jpg') }});">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumbs">
+                    <h1>ACCOUNT SECTION</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End breadcrumb area-->
+
+<!--Start breadcrumb bottom area-->     
+<section class="breadcrumb-bottom-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="left pull-left">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+                        <li class="active">Register</li>
+                    </ul>
+                </div>
+                <div class="right pull-right">
+                    
+                </div>    
+            </div>
+        </div>
+    </div>
+</section>
+<!--End breadcrumb bottom area-->
+
+<!--Start Business planning area-->
+<section id="single-service-area">
+    <div class="container">
+        <div class="row login-register-area">
+            <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 pull-right">
+                <div class="content-box ">
+                    <!--Start top content-->
+                    <div class="form register">
+                    <div class="sec-title">
+                        <h1>Register as Corporate Organization</h1>
+                        <span class="border"></span>
+                        <p>
+                            @if(session('status'))
+                                <div class="alert alert-{{session('status')['type']}}">
+                                    {{session('status')['text']}}
+                                </div>
+                            @endif
+                        </p>
+                    </div>
+                    <div class="row">
+                        <form action="/register-corporate-organization" method="POST">
+                        @csrf
+                            
+                            <div class="col-md-12">
+                                @if ($errors->has('company_name'))
+                                    <span class="text-danger">{{ $errors->first('company_name') }}</span>
+                                @endif
+                                <div class="input-field">
+                                    <input type="text" name="company_name" placeholder="Organization Name *" required value="{{ old('company_name') }}">
+                                    <div class="icon-holder">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </div>
+                                </div>    
+                            </div>
+                   
+                            <div class="col-md-12">
+                                @if ($errors->has('phone'))
+                                    <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                @endif
+                                <div class="input-field">
+                                    <input type="tel" name="phone" placeholder="Phone Number *" required value="{{ old('phone') }}">
+                                    <div class="icon-holder">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                    </div>
+                                </div>    
+                            </div>
+                        
+                            <div class="col-md-12">
+                                @if ($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                @endif
+                                <div class="input-field">
+                                    <input type="email" name="email" placeholder="Enter Email *" required value="{{ old('email') }}">
+                                    <div class="icon-holder">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </div>
+                                </div>    
+                            </div>
+                            <div class="col-md-12">
+                                @if ($errors->has('password'))
+                                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                                @endif
+                                <div class="input-field">
+                                    <input type="password" name="password" placeholder="Enter Password *" required value="{{ old('password') }}">
+                                    <div class="icon-holder">
+                                        <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                    </div>
+                                </div>    
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-lg-5 col-md-3 col-sm-4 col-xs-12">
+                                        <button class="thm-btn bgclr-1" type="submit">Register</button>
+                                    </div>
+                                    <div class="col-lg-7 col-md-9 col-sm-8 col-xs-12">
+                                        <h6><span>*</span>You must fill all the fields. </h6>
+                                    </div>
+                                </div>   
+                            </div> 
+                        </form>    
+                    </div>
+                </div>    
+            </div>
+                
+            </div>
+            <div class="col-lg-4 col-md-5 col-sm-7 col-xs-12 pull-left">
+                <div class="left-sidebar">
+                    <!--Start single sidebar-->
+                    <div class="single-sidebar">
+                        <ul class="page-link">
+                            <li><a href="/register-undergraduate">UnderGraduate</a></li>
+                            <li><a href="/register-young-professional">Young Professional</a></li>
+                            <li><a  href="/register-corporate-professional">Corporate Professional</a></li>
+                            <li><a class="active" href="register-corporate-organization">Corporate Organization</a></li>             
+                        </ul>
+                    </div>
+                    <!--End single sidebar-->
+                
+           
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End Business planning area-->
+
+
+
+
+@include('frontend.layouts.footer')

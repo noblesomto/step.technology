@@ -1,0 +1,17 @@
+.img-holder{
+	width: 100%;
+	height: 250px !important;
+	object-fit: cover;
+}
+.blog-single-post{
+	height: 500px;
+}
+@media (min-width: 320px) and (max-width: 767.95px) {
+	.rev-mobile{
+		display: none;
+	}
+
+	.blog-single-post{
+		height: 100%;
+	}
+}
