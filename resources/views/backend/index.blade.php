@@ -1,110 +1,63 @@
-@include('backend.layouts.header')
-@include('backend.layouts.nav')
+@include('backend.layouts.tailwind.header')
+@include('backend.layouts.tailwind.nav', ['active' => 'dashboard'])
 
-<main id="main" class="main">
+<div class="mb-6">
+    <h1 class="font-step-heading font-bold text-2xl text-gray-900">Dashboard</h1>
+    <nav class="text-sm text-gray-500 mt-1">
+        <a href="/admin/index" class="hover:text-step-primary">Home</a>
+        <span class="mx-1">/</span>
+        <span class="text-step-primary">Dashboard</span>
+    </nav>
+</div>
 
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/admin/index">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Blog Posts</h5>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
+                <i class="fa fa-book text-step-primary"></i>
+            </div>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ \App\Models\Blog::count() }}</h6>
+        </div>
+    </div>
 
-    <section class="section dashboard">
-      <div class="row">
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Users</h5>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
+                <i class="fa fa-users text-step-primary"></i>
+            </div>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ $count_users }}</h6>
+        </div>
+    </div>
 
-        <!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Events</h5>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
+                <i class="fa fa-calendar text-step-primary"></i>
+            </div>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ \App\Models\Event::count() }}</h6>
+        </div>
+    </div>
+</div>
 
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card sales-card">
+<div class="mt-8">
+    <p class="text-xs uppercase tracking-wider text-gray-400 font-step-heading font-semibold mb-4">Exam Portal</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Total Exam Submissions</h5>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ $examCounts->total ?? 0 }}</h6>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Approved</h5>
+            <h6 class="font-step-heading font-bold text-xl text-green-600">{{ $examCounts->approved ?? 0 }}</h6>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Pending Review</h5>
+            <h6 class="font-step-heading font-bold text-xl text-yellow-600">{{ $examCounts->pending ?? 0 }}</h6>
+        </div>
+    </div>
+</div>
 
-               
-
-                <div class="card-body">
-                  <h5 class="card-title">Blog Post</h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-book"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>7</h6>
-                      
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End Sales Card -->
-
-            <!-- Revenue Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
-
-              
-
-                <div class="card-body">
-                  <h5 class="card-title">Comments </h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>6</h6>
-                      
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End Revenue Card -->
-
-            <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
-
-              <div class="card info-card customers-card">
-
-            
-
-                <div class="card-body">
-                  <h5 class="card-title">Total Post Views </h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-eye"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>99</h6>
-                    
-
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div><!-- End Customers Card -->
-
-           
-              </div>
-            </div><!-- End Top Selling -->
-
-          </div>
-        </div><!-- End Left side columns -->
-
-   
-
-      </div>
-    </section>
-
-  </main><!-- End #main -->
-  @include('backend.layouts.footer')
+@include('backend.layouts.tailwind.footer')

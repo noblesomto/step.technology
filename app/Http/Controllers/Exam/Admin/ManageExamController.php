@@ -14,7 +14,7 @@ class ManageExamController extends Controller
         $title = "New Question  | " . config('global.site_name');
 
         if ($request->isMethod('GET')) {
-            return view('exam.backend.questions.new-question', compact('title'));
+            return view('backend.exam.questions.new-question', compact('title'));
         }
 
          if ($request->isMethod('POST')) {
@@ -48,7 +48,7 @@ class ManageExamController extends Controller
     {
         $title = "All Questions | " . config('global.site_name');
         $questions = Exam::latest()->paginate(10); // paginate for cleaner view
-        return view('exam.backend.questions.index', compact('title', 'questions'));
+        return view('backend.exam.questions.index', compact('title', 'questions'));
     }
 
     // ✅ Show edit form
@@ -56,7 +56,7 @@ class ManageExamController extends Controller
     {
         $title = "Edit Question | " . config('global.site_name');
         $question = Exam::findOrFail($id);
-        return view('exam.backend.questions.edit', compact('title', 'question'));
+        return view('backend.exam.questions.edit', compact('title', 'question'));
     }
 
     // ✅ Update question

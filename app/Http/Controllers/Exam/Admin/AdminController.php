@@ -66,7 +66,7 @@ class AdminController extends Controller
     $usersWithScores = $query->orderBy('exam_scores.updated_at', 'desc')
                             ->paginate(30);
         //dd($usersWithScores);
-        return view('exam.backend.enrollments', compact('title','usersWithScores'));
+        return view('backend.exam.enrollments', compact('title','usersWithScores'));
     }
 
     public function exam_status($id, $status)

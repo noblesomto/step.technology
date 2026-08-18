@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Exam\PageController;
 use App\Http\Controllers\Exam\UserController;
 use App\Http\Controllers\Exam\AccountController;
-use App\Http\Controllers\Exam\Admin\AdminController;
-use App\Http\Controllers\Exam\Admin\ManageExamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +22,12 @@ Route::any('/authenticate', [AccountController::class, 'authenticate']);
 Route::any('/resend-otp', [AccountController::class, 'resend_otp']);
 Route::any('/forgot-password', [AccountController::class, 'forgot_password']);
 Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_password']);
-Route::any('/admin', [AccountController::class, 'adminlogin']);
+
+// Admin login now lives on the unified admin CMS (step.technology) —
+// redirect rather than serve a second login form here.
+Route::any('/admin', function () {
+    return redirect('https://step.technology/adminlogin');
+});
 
 // User Dashboard Section
 Route::get('/user/index', [UserController::class, 'index'])->name('user.index')->middleware('usersession');
@@ -39,18 +42,9 @@ Route::post('user/save-exam-progress', [UserController::class, 'saveProgress'])-
 Route::post('user/submit-exam', [UserController::class, 'submitExam'])->name('user.submit-exam');
 Route::get('user/exam-done', [UserController::class, 'exam_done'])->name('user.exam-done');
 
-// Admin Index
-Route::get('/admin/index', [AdminController::class, 'index'])->middleware('adminsession');
-Route::get('/admin/logout', [AdminController::class, 'logout'])->middleware('adminsession');
-
-// Questions Section
-Route::prefix('admin')
-    ->middleware('adminsession')
-    ->group(function () {
-        Route::get('/questions', [ManageExamController::class, 'index'])->name('questions.index');
-        Route::get('/questions/{id}/edit', [ManageExamController::class, 'edit'])->name('questions.edit');
-        Route::put('/questions/{id}', [ManageExamController::class, 'update'])->name('questions.update');
-
-        Route::get('/enrollments', [AdminController::class, 'enrollments']);
-        Route::get('/exam-status/{id}/{status}', [AdminController::class, 'exam_status']);
-    });
+// The entire admin section — dashboard, questions, enrollments — now lives
+// on the unified admin CMS at step.technology/admin/*. Redirect any old
+// bookmarks/links here rather than serving a second admin panel.
+Route::any('/admin/{any}', function () {
+    return redirect('https://step.technology/adminlogin');
+})->where('any', '.*');

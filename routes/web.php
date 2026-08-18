@@ -8,6 +8,8 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DevPreviewController;
+use App\Http\Controllers\Exam\Admin\ManageExamController;
+use App\Http\Controllers\Exam\Admin\AdminController as ExamAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,7 +99,18 @@ Route::any('/user/membership', [UserController::class, 'membership'])->middlewar
 Route::get('/user/logout', [UserController::class, 'logout'])->middleware('usersession');
 
 //Payment Confirmation
-Route::any('/admin/payment', [AdminController::class, 'payment']);
-Route::any('/admin/confirm-payment/{user_id}', [AdminController::class, 'confirm_payment']);
+Route::any('/admin/payment', [AdminController::class, 'payment'])->middleware('adminsession');
+Route::any('/admin/confirm-payment/{user_id}', [AdminController::class, 'confirm_payment'])->middleware('adminsession');
+
+// Exam Portal management — folded into the unified admin CMS so there's one
+// login/nav for both step's own content and the exam portal's questions and
+// enrollments (previously split across step.technology/admin and
+// exams.step.technology/admin as two separate admin panels).
+Route::any('/admin/questions/new', [ManageExamController::class, 'new_question'])->middleware('adminsession');
+Route::get('/admin/questions', [ManageExamController::class, 'index'])->name('questions.index')->middleware('adminsession');
+Route::get('/admin/questions/{id}/edit', [ManageExamController::class, 'edit'])->name('questions.edit')->middleware('adminsession');
+Route::put('/admin/questions/{id}', [ManageExamController::class, 'update'])->name('questions.update')->middleware('adminsession');
+Route::get('/admin/enrollments', [ExamAdminController::class, 'enrollments'])->middleware('adminsession');
+Route::get('/admin/exam-status/{id}/{status}', [ExamAdminController::class, 'exam_status'])->middleware('adminsession');
 
 

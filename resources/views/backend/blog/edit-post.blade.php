@@ -1,98 +1,48 @@
-@include('backend.layouts.header')
-@include('backend.layouts.nav')
+@include('backend.layouts.tailwind.header')
+@include('backend.layouts.tailwind.nav', ['active' => 'blog'])
 
-<script src="{{ asset('backend/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('backend/js/jquery.min.js') }}"></script>
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-<main id="main" class="main">
+<link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<link rel="stylesheet" href="{{ asset('backend/css/trix-editor.css') }}">
 
-    <div class="pagetitle">
-    <h1>Blog</h1>
-  
-    </div><!-- End Page Title -->
-    
-    <section class="section">
-    <div class="row">
-    <div class="col-lg-12">
-    
-        <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Edit Blog Post</h5>
-            @if(session('status'))
-                <div class="alert alert-{{session('status')['type']}}">
-                    {{session('status')['text']}}
-                </div>
+<div class="mb-6">
+    <h1 class="font-step-heading font-bold text-2xl text-gray-900">Edit Blog Post</h1>
+</div>
+
+@if (session('status'))
+    <div class="mb-6 rounded-md px-4 py-3 text-sm {{ session('status')['type'] === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200' }}">
+        {{ session('status')['text'] }}
+    </div>
+@endif
+
+<div class="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
+    <form action="/blogpost/edit-post/{{ $post->blog_id }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Title</label>
+            @if ($errors->has('blog_title'))
+                <span class="block text-red-600 text-sm mb-1">{{ $errors->first('blog_title') }}</span>
             @endif
-            <!-- General Form Elements -->
-            <form action="/blogpost/edit-post/{{ $post->blog_id }}" method="POST" role="form" class="" enctype="multipart/form-data">
-             @csrf
-             @method('PUT') 
-    
-            <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Title</label>
-                <div class="col-sm-10">
-                    @if ($errors->has('blog_title'))
-                        <span class="text-danger">{{ $errors->first('blog_title') }}</span>
-                    @endif
-                <input type="text" name="blog_title" class="form-control" placeholder="Blog Post Title" value="{{ $post->blog_title }}" required>
-                </div>
-            </div>
-
-
-            <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Featured Image</label>
-                <div class="col-sm-10">
-                    @if ($errors->has('blog_picture'))
-                        <span class="text-danger">{{ $errors->first('blog_picture') }}</span>
-                    @endif
-                <input class="form-control" name="blog_picture" type="file" id="formFile">
-                <div class="category-image">
-                    <img width="150px" src="{{ asset('uploads/thumbnails/'.$post->blog_picture) }}">
-                </div>
-                </div>
-            </div>
-
-
-
-
-    
-            <div class="row mb-3">
-                <label for="inputPassword" class="col-sm-2 col-form-label">Blog Body</label>
-                <div class="col-sm-10">
-                    @if ($errors->has('blog_body'))
-                        <span class="text-danger">{{ $errors->first('blog_body') }}</span>
-                    @endif
-                <textarea class="form-control tinymce-editor" name="blog_body" id="tiny" style="height: 100px" required>{{ $post->blog_body }}</textarea>
-                </div>
-            </div>
-    
-            <script type="text/javascript">
-                CKEDITOR.replace('tiny', {
-                    filebrowserUploadUrl: "{{route('ckeditor.image-upload', ['_token' => csrf_token() ])}}",
-                    filebrowserUploadMethod: 'form'
-                });
-            </script>
-
-
-    
-    
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label"></label>
-                <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Publish</button>
-                </div>
-            </div>
-    
-            </form><!-- End General Form Elements -->
-    
+            <input type="text" name="blog_title" placeholder="Blog Post Title" value="{{ $post->blog_title }}" required class="w-full max-w-xl h-11 rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-3">
         </div>
-        </div>
-    
-    </div>
-    
-    </div>
-    </section>
-    
-    </main><!-- End #main -->
 
-    @include('backend.layouts.footer')
+        <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Featured Image</label>
+            @if ($errors->has('blog_picture'))
+                <span class="block text-red-600 text-sm mb-1">{{ $errors->first('blog_picture') }}</span>
+            @endif
+            <input type="file" name="blog_picture" class="text-sm text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-md file:border-0 file:bg-step-primary/10 file:text-step-primary file:font-semibold hover:file:bg-step-primary/20">
+            <img src="{{ asset('uploads/thumbnails/'.$post->blog_picture) }}" class="w-36 rounded border border-gray-200 mt-3">
+        </div>
+
+        @include('backend.layouts.tailwind.trix-editor', ['name' => 'blog_body', 'label' => 'Blog Body', 'value' => $post->blog_body])
+
+        <button type="submit" class="bg-step-primary text-white font-step-heading font-semibold px-6 py-2.5 rounded-full hover:bg-step-accent transition-colors">Publish</button>
+    </form>
+</div>
+
+<script src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+<script src="{{ asset('backend/js/trix-editor.js') }}"></script>
+
+@include('backend.layouts.tailwind.footer')
