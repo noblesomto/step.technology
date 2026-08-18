@@ -1,151 +1,70 @@
-@include('frontend.layouts.header')
-@include('frontend.layouts.nav')
+@include('frontend.layouts.tailwind.header')
+@include('frontend.layouts.tailwind.nav')
+@include('frontend.layouts.tailwind.page-header', ['pageTitle' => 'Membership'])
 
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-4">
+        <h1 class="font-step-heading font-bold text-2xl sm:text-3xl text-step-primary mb-2">Membership Applications</h1>
+        <span class="block w-16 h-1 bg-step-accent mb-8"></span>
 
+        <h5 class="font-step-heading font-semibold text-lg text-gray-800 mb-4">Join STEP and become part of a dedicated group of over 1,000 professionals.<br>Benefits:</h5>
+        <ul class="space-y-2 mb-12">
+            @foreach ([
+                'Trainings/Certifications in their areas of specialization',
+                'Monthly energy/technology newsletters',
+                'Entrepreneurial start-up grants',
+                'Monthly technical sessions',
+                'STEP conferences/exhibitions, online webinars',
+                'Career advisory systems/contacts',
+                'Annual subsidized intellectual development international tour to a foreign country, partnership/mentorship platforms',
+            ] as $benefit)
+                <li class="flex items-start gap-2 text-gray-600"><i class="fa fa-angle-right text-step-accent mt-1"></i> {{ $benefit }}</li>
+            @endforeach
+        </ul>
 
+        <h3 class="font-step-heading font-semibold text-xl text-step-primary mb-6">Membership Category</h3>
 
-<!--Start breadcrumb area-->     
-<section class="breadcrumb-area" style="background-image: url({{ asset('frontend/img/banner.jpg') }});">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="breadcrumbs">
-                    <h1>Membership</h1>
+        @php
+            $categories = [
+                [
+                    'title' => 'Undergraduates',
+                    'body' => 'Person must be undergoing a regular course of study in Engineering Science of duration not less than three years in a University or Technical Institution whose curriculum is approved by the Council in respect of Engineering Education.',
+                    'href' => '/register-undergraduate',
+                ],
+                [
+                    'title' => 'Young Professionals',
+                    'body' => "Person must possess an academic qualification at the level of a University degree in the Sciences allied to engineering science, or other qualifications approved by the Council of the Society. Person must have been engaged on work related to the practice of engineering for a minimum period of five years.",
+                    'href' => '/register-young-professional',
+                ],
+                [
+                    'title' => 'Corporate Professionals',
+                    'body' => 'A Corporate member is eligible to all privileges of a member as prescribed by Council, is eligible to vote at the AGM and can aspire to any positions in the Society in line with the conditions as prescribed by Council.',
+                    'href' => '/register-corporate-professional',
+                ],
+                [
+                    'title' => 'Corporate Organisation',
+                    'body' => 'A Corporate Organisation is eligible to all privileges of a member as prescribed by Council, is eligible to vote at the AGM and can aspire to any positions in the Society in line with the conditions as prescribed by Council.',
+                    'href' => '/register-corporate-organization',
+                ],
+            ];
+        @endphp
+
+        <div class="border border-gray-200 rounded-lg divide-y divide-gray-200" x-data="{ openIndex: 0 }">
+            @foreach ($categories as $i => $category)
+                <div>
+                    <button @click="openIndex = openIndex === {{ $i }} ? null : {{ $i }}" class="w-full flex items-center justify-between px-6 py-4 text-left">
+                        <h4 class="font-step-heading font-semibold text-gray-900">{{ $category['title'] }}</h4>
+                        <svg class="w-4 h-4 text-step-primary shrink-0 transition-transform" :class="openIndex === {{ $i }} && 'rotate-180'" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="openIndex === {{ $i }}" x-transition x-cloak class="px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed">{{ $category['body'] }}</p>
+                        <a href="{{ $category['href'] }}" class="inline-block mt-4 bg-step-primary text-white font-step-heading font-semibold px-6 py-2.5 rounded-full hover:bg-step-accent transition-colors">Join Now</a>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
-<!--End breadcrumb area-->
 
-<!--Start breadcrumb bottom area-->     
-<section class="breadcrumb-bottom-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="left pull-left">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                        <li class="active">Membership</li>
-                    </ul>
-                </div>
-                <div class="right pull-right">
-                    <a href="#">
-                        <span><i class="fa fa-share-alt" aria-hidden="true"></i>Share</span> 
-                    </a>   
-                </div>    
-            </div>
-        </div>
-    </div>
-</section>
-<!--End breadcrumb bottom area-->
-
-<!--Start about area-->
-<section class="about-area sec-padding">
-    <div class="container">
-        <div class="row benefits-service-content">
-            <div class="col-lg-8 col-md-offset-2">
-                <div class="sec-title pdb-50">
-                    <h1>Membership Applications</h1>
-                    <span class="border"></span>
-                </div>
-                    <div class="text-holder">
-                        <h5>Join STEP and become part of a dedicated group of over 1000 Professionals.<br>
-                        Benefits:</h5> <br>
-                        <ul>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Trainings/ Certifications in their areas of specialization</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Monthly energy/Technology newsletters</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Entrepreneurial start up grants</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Monthly technical sessions</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> STEP conferences/ Exhibitions, online webinars</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Career advisory systems/ contacts</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Annual subsidized intellectual development international tour to a foreign country, partnership/ mentorship platforms</li>
-                        
-                        </ul>
-                    </div>
-
-                    <div class="text-holder mt-30">
-                       
-                        <h3>Membership Category: </h3><br>
-                       <!--Start accordion box-->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="accordion-box">
-                                <!--Start single accordion box-->
-                                <div class="accordion accordion-block">
-                                    <div class="accord-btn">
-                                        <h4>Undergraduates</h4>
-                                    </div>
-                                    <div class="accord-content">
-                                        <p>Person must be undergoing a regular course of study in Engineering Science of duration not less than three years in a University or Technical Institution whose curriculum is approved by the Council in respect of Engineering Education. </p>
-                                    </div>
-                                </div>
-                                <!--End single accordion box--> 
-                                <!--Start single accordion box-->
-                                <div class="accordion accordion-block">
-                                    <div class="accord-btn">
-                                        <h4>Young Professionals</h4>
-                                    </div>
-                                    <div class="accord-content">
-                                        <p>Person must possess an academic qualification at the level of a University degree in the Sciences allied to engineering science, or other qualifications approved by the Council of the Society.<br>
-                                        Person must have been engaged on work related to the practice of engineering for a minimum period of five years.</p>
-                                    </div>
-                                </div>
-                                <!--End single accordion box-->
-                                <!--Start single accordion box-->
-                                <div class="accordion accordion-block last">
-                                    <div class="accord-btn last">
-                                        <h4>Corporate Professionals</h4>
-                                    </div>
-                                    <div class="accord-content last">
-                                        <p>A Corporate member is eligible to all privileges of a member as prescribed by Council, is eligible to vote at the AGM and can aspire to any positions in the Society in line with the conditions as prescribed by Council. </p>
-                                    </div>
-                                </div>
-                                <!--End single accordion box-->
-                                <!--Start single accordion box-->
-                                <div class="accordion accordion-block last">
-                                    <div class="accord-btn last">
-                                        <h4>Corporate Organisation</h4>
-                                    </div>
-                                    <div class="accord-content last">
-                                        <p>A Corporate Organisation is eligible to all privileges of a member as prescribed by Council, is eligible to vote at the AGM and can aspire to any positions in the Society in line with the conditions as prescribed by Council.</p>
-                                    </div>
-                                </div>
-                                <!--End single accordion box-->       
-                            </div>
-                        </div>
-                    </div>
-                    <!--End accordion box-->
-                    </div>
-        </div>
-    </div>
-    
-    </div>
-</section>
-<!--End about area-->
-
- 
- 
-<!--Start opportunities area--> 
-<section class="opportunities-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="inner-content text-center wow zoomIn" data-wow-delay="0.5s" data-wow-duration="1s" data-wow-offset="0">
-                    <h1>It is time to create your own world. Take the bold STEP now!.</h1>
-                    <p></p>
-                    <a href="/join">Join Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>      
-<!--End opportunities area--> 
- 
-
-
-
-
-
-@include('frontend.layouts.footer')
+@include('frontend.layouts.tailwind.cta-banner')
+@include('frontend.layouts.tailwind.footer')

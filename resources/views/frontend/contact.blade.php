@@ -1,181 +1,83 @@
-@include('frontend.layouts.header')
-@include('frontend.layouts.nav')
+@include('frontend.layouts.tailwind.header')
+@include('frontend.layouts.tailwind.nav')
+@include('frontend.layouts.tailwind.page-header', ['pageTitle' => 'Contact Us'])
 
-<!--Start breadcrumb area-->     
-<section class="breadcrumb-area" style="background-image: url({{ asset('frontend/img/banner.jpg') }});">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="breadcrumbs">
-                    <h1>Contact Us</h1>
+{{-- ================= CONTACT INFO ================= --}}
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <h1 class="font-step-heading font-bold text-3xl sm:text-4xl text-step-primary">Get In Touch With Us</h1>
+            <span class="block w-16 h-1 bg-step-accent mx-auto mt-4"></span>
+            <p class="mt-4 text-gray-500">We want to hear from you!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center p-8 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow">
+                <div class="w-14 h-14 rounded-full bg-step-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-map-marker text-step-primary text-2xl"></i>
                 </div>
+                <h3 class="font-step-heading font-semibold text-lg mb-2">Visit Our Place</h3>
+                <span class="block w-10 h-0.5 bg-step-accent mx-auto mb-3"></span>
+                <p class="text-gray-600 text-sm">National Energy and Technology Center (NET CENTER) No. 15 Abua Street, Rumuibekwe, Port Harcourt</p>
+            </div>
+            <div class="text-center p-8 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow">
+                <div class="w-14 h-14 rounded-full bg-step-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-phone text-step-primary text-2xl"></i>
+                </div>
+                <h3 class="font-step-heading font-semibold text-lg mb-2">Phone</h3>
+                <span class="block w-10 h-0.5 bg-step-accent mx-auto mb-3"></span>
+                <p class="text-gray-600 text-sm">+234-{{ config('global.site_phone') }}</p>
+            </div>
+            <div class="text-center p-8 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow">
+                <div class="w-14 h-14 rounded-full bg-step-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-envelope text-step-primary text-2xl"></i>
+                </div>
+                <h3 class="font-step-heading font-semibold text-lg mb-2">Email</h3>
+                <span class="block w-10 h-0.5 bg-step-accent mx-auto mb-3"></span>
+                <p class="text-gray-600 text-sm">{{ config('global.site_email') }}</p>
             </div>
         </div>
     </div>
 </section>
-<!--End breadcrumb area-->
 
-<!--Start breadcrumb bottom area-->     
-<section class="breadcrumb-bottom-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="left pull-left">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                        <li class="active">Contact Us</li>
-                    </ul>
-                </div>
-                <div class="right pull-right">
-                    <a href="#">
-                        <span><i class="fa fa-share-alt" aria-hidden="true"></i>Share</span> 
-                    </a>   
-                </div>    
-            </div>
+{{-- ================= CONTACT FORM ================= --}}
+<section class="py-16 bg-gray-50">
+    <div class="max-w-2xl mx-auto px-4">
+        <div class="text-center mb-8">
+            <h1 class="font-step-heading font-bold text-2xl sm:text-3xl text-step-primary">Send Us Your Message</h1>
+            <span class="block w-16 h-1 bg-step-accent mx-auto mt-4"></span>
         </div>
+
+        @if (session('status'))
+            <div class="mb-6 rounded-md px-4 py-3 text-sm {{ session('status')['type'] === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200' }}">
+                {{ session('status')['text'] }}
+            </div>
+        @endif
+
+        <form class="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 space-y-4" action="/contact" method="post">
+            @csrf
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input type="text" name="name" placeholder="Your Name*" required class="w-full rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-4 py-2.5">
+                <input type="email" name="email" placeholder="Your Mail*" required class="w-full rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-4 py-2.5">
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input type="text" name="phone" placeholder="Phone" required class="w-full rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-4 py-2.5">
+                <input type="text" name="subject" placeholder="Subject" required class="w-full rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-4 py-2.5">
+            </div>
+            <textarea name="message" rows="5" placeholder="Your Message.." required class="w-full rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-4 py-2.5"></textarea>
+
+            <div>
+                <strong class="block text-sm text-gray-700 mb-2">ReCaptcha:</strong>
+                <div class="g-recaptcha" data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"></div>
+                @if ($errors->has('g-recaptcha-response'))
+                    <span class="text-red-600 text-sm">{{ $errors->first('g-recaptcha-response') }}</span>
+                @endif
+            </div>
+
+            <input id="form_botcheck" name="form_botcheck" type="hidden" value="">
+            <button type="submit" class="w-full bg-step-primary text-white font-step-heading font-semibold px-6 py-3 rounded-full hover:bg-step-accent transition-colors">Send Message</button>
+        </form>
     </div>
 </section>
-<!--End breadcrumb bottom area-->
 
-<!--Start contact area-->
-<section class="get-touch-area">
-    <div class="container">
-        <div class="sec-title text-center">
-            <h1>Get Touch With Us</h1>
-            <span class="border-center"></span>
-            <p>We want to hear from you!</p>
-        </div>
-        <div class="row">
-            <!--Start single item-->
-            <div class="col-md-4">
-                <div class="single-item hvr-grow-shadow text-center">
-                    <div class="icon-holder">
-                        <span class="flaticon-signs"></span>    
-                    </div> 
-                    <div class="text-holder">
-                        <h3>Visit Our Place</h3>
-                        <span class="border"></span>
-                        <p>National Energy and Technology Center ( NET CENTER) No; 15 Abua Street Rumuibekwe Port Harcourt</p>
-                    </div>  
-                </div>
-            </div>
-            <!--End single item-->
-            <!--Start single item-->
-            <div class="col-md-4">
-                <div class="single-item hvr-grow-shadow text-center">
-                    <div class="icon-holder">
-                        <span class="flaticon-telephone"></span>    
-                    </div> 
-                    <div class="text-holder">
-                        <h3>Phone</h3>
-                        <span class="border"></span>
-                        <p>+234-{{ config('global.site_phone') }}<br> </p>
-                    </div>  
-                </div>
-            </div>
-            <!--End single item-->   
-            <!--Start single item-->
-            <div class="col-md-4">
-                <div class="single-item hvr-grow-shadow text-center">
-                    <div class="icon-holder">
-                        <span class="flaticon-contact"></span>    
-                    </div> 
-                    <div class="text-holder">
-                        <h3>Email</h3>
-                        <span class="border"></span>
-                        <p>Email: {{ config('global.site_email') }}</p>
-                    </div>  
-                </div>
-            </div>
-            <!--End single item-->        
-        </div>
-    </div>
-</section>
-<!--End contact area-->
-
-<!--Start contact form area-->
-<section class="contact-form-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-7 col-md-offset-2">
-                <div class="contact-form">
-                    <div class="sec-title pdb-50">
-                        <h1>Send Us Your Mesage</h1>
-                        <span class="border"></span>
-                         @if(session('status'))
-                            <div class="alert alert-{{session('status')['type']}}">
-                                {{session('status')['text']}}
-                            </div>
-                        @endif
-                    </div>
-                    <form  class="default-form" action="/contact" method="post">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" name="name" class="form-control" value="" placeholder="Your Name*" required="">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" name="email" class="form-control" value="" placeholder="Your Mail*" required="">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" name="phone" class="form-control" value="" placeholder="Phone" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" name="subject" class="form-control" value="" placeholder="Subject" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <textarea name="message" class="form-control" placeholder="Your Message.." required=""></textarea>
-                            </div>
-                        </div>
-                       
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <strong>ReCaptcha:</strong>
-                                    <div class="g-recaptcha" data-sitekey="{{ env('GOOGLE_RECAPTCHA_KEY') }}"></div>
-                                    @if ($errors->has('g-recaptcha-response'))
-                                        <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
-                                    @endif   
-                                </div>
-                            </div>
-                            </div>
-
-                             <div class="row">
-                            <div class="col-md-12">
-                                <input id="form_botcheck" name="form_botcheck" class="form-control" type="hidden" value="">
-                                <button class="thm-btn bgclr-1" type="submit" data-loading-text="Please wait...">send message</button>
-                            </div>
-                        </div>
-                    </form>  
-                </div>
-            </div>
-   
-        </div>
-    </div>
-</section>
-<!--End contact form area-->
-
-
-<script type="text/javascript">
-
-$("#refresh").click(function(){
-
-  $.ajax({
-     type:'GET',
-     url:'/refresh_captcha',
-     success:function(data){
-        $(".captcha span").html(data.captcha);
-     }
-  });
-});
-
-
-</script>
-
-@include('frontend.layouts.footer')
+@include('frontend.layouts.tailwind.footer')

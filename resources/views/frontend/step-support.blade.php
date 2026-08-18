@@ -1,109 +1,28 @@
-@include('frontend.layouts.header')
-@include('frontend.layouts.nav')
+@include('frontend.layouts.tailwind.header')
+@include('frontend.layouts.tailwind.nav')
+@include('frontend.layouts.tailwind.page-header', ['pageTitle' => 'STEP Support'])
 
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-4">
+        <h1 class="font-step-heading font-bold text-2xl sm:text-3xl text-step-primary mb-2">STEP Professional Support (PS)</h1>
+        <span class="block w-16 h-1 bg-step-accent mb-8"></span>
 
+        <h5 class="font-step-heading font-semibold text-lg text-gray-800 mb-4">Aim: To improve people or organizational performance by offering world class complete solutions.<br>Our PS includes:</h5>
+        <ul class="space-y-2 mb-10">
+            @foreach (['Research', 'Trainings', 'New technology and energy knowledge sharing', 'Process', 'Content development', 'Data', 'Professional Task delivery', 'CSR'] as $item)
+                <li class="flex items-start gap-2 text-gray-600"><i class="fa fa-angle-right text-step-accent mt-1"></i> {{ $item }}</li>
+            @endforeach
+        </ul>
 
-
-<!--Start breadcrumb area-->     
-<section class="breadcrumb-area" style="background-image: url({{ asset('frontend/img/banner.jpg') }});">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="breadcrumbs">
-                    <h1>STEP Support</h1>
-                </div>
-            </div>
-        </div>
+        <h5 class="font-step-heading font-semibold text-lg text-gray-800 mb-2">These can be achieved through our P2P (Person2Person) or TECHSERV (Online services)</h5>
+        <h3 class="font-step-heading font-semibold text-xl text-step-primary mt-6 mb-4">Three Strategies</h3>
+        <ul class="space-y-2">
+            @foreach (['Deliver integrated solutions directly or indirectly.', 'Real time dimension to services', 'Innovation management', 'Best practices'] as $item)
+                <li class="flex items-start gap-2 text-gray-600"><i class="fa fa-angle-right text-step-accent mt-1"></i> {{ $item }}</li>
+            @endforeach
+        </ul>
     </div>
 </section>
-<!--End breadcrumb area-->
 
-<!--Start breadcrumb bottom area-->     
-<section class="breadcrumb-bottom-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="left pull-left">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                        <li class="active">STEP Support</li>
-                    </ul>
-                </div>
-                <div class="right pull-right">
-                    <a href="#">
-                        <span><i class="fa fa-share-alt" aria-hidden="true"></i>Share</span> 
-                    </a>   
-                </div>    
-            </div>
-        </div>
-    </div>
-</section>
-<!--End breadcrumb bottom area-->
-
-<!--Start about area-->
-<section class="about-area sec-padding">
-    <div class="container">
-        <div class="row benefits-service-content">
-            <div class="col-lg-8 col-md-offset-2">
-                <div class="sec-title pdb-50">
-                    <h1>STEP Professional Support (PS)</h1>
-                    <span class="border"></span>
-                </div>
-                    <div class="text-holder">
-                        <h5>Aim: To improve people or organizational performance by offering world class complete solutions.<br>
-                        Our PS includes:</h5> <br>
-                        <ul>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Research</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Trainings</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> New technology and energy knowledge sharing</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Process</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Content development</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Data</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Professional Task delivery</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> CSR</li>
-                        </ul>
-                    </div>
-
-                    <div class="text-holder mt-30">
-                        <h5>These can be achieved through our P2P (Person2Person) or TECHSERV (Online services)</h5><br>
-                        <h3>THREE STRATEGIES: </h3><br>
-                        <ul>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Deliver integrated solutions directly or indirectly.</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Real time dimension to services</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Innovation management</li>
-                            <li><i class="fa fa-angle-right" aria-hidden="true"></i> Best practices</li>
-                           
-                        </ul>
-                    </div>
-        </div>
-    </div>
-    
-    </div>
-</section>
-<!--End about area-->
-
- 
- 
-<!--Start opportunities area--> 
-<section class="opportunities-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="inner-content text-center wow zoomIn" data-wow-delay="0.5s" data-wow-duration="1s" data-wow-offset="0">
-                    <h1>It is time to create your own world. Take the bold STEP now!.</h1>
-                    <p></p>
-                    <a href="/join">Join Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>      
-<!--End opportunities area--> 
- 
-
-
-
-
-
-@include('frontend.layouts.footer')
+@include('frontend.layouts.tailwind.cta-banner')
+@include('frontend.layouts.tailwind.footer')
