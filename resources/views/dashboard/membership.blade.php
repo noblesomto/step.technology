@@ -1,108 +1,58 @@
-@include('dashboard.layouts.header')
-@include('dashboard.layouts.nav')
+@include('dashboard.layouts.tailwind.header')
+@include('dashboard.layouts.tailwind.nav', ['active' => 'membership'])
 
-<script src="{{ asset('backend/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('backend/js/jquery.min.js') }}"></script>
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-<main id="main" class="main">
+<div class="mb-6">
+    <h1 class="font-step-heading font-bold text-2xl text-gray-900">Membership Payment</h1>
+</div>
 
-    <div class="pagetitle">
-    <h1>Membership Payment</h1>
-  
-    </div><!-- End Page Title -->
-    
-    <section class="section">
-    <div class="row">
-    <div class="col-lg-12">
-    
-        <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Make Payment and Upload Proof of Payment</h5>
-            @if(session('status'))
-                <div class="alert alert-{{session('status')['type']}}">
-                    {{session('status')['text']}}
-                </div>
+<div class="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
+    <h5 class="font-step-heading font-semibold text-lg text-step-primary mb-4">Make Payment and Upload Proof of Payment</h5>
+
+    @if (session('status'))
+        <div class="mb-6 rounded-md px-4 py-3 text-sm {{ session('status')['type'] === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200' }}">
+            {{ session('status')['text'] }}
+        </div>
+    @endif
+
+    <form action="/user/membership" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <div class="mb-6">
+            @if ($user->user_type == "Young Professional" || $user->user_type == "Corporate Professional")
+                <h4 class="font-step-heading font-bold text-lg text-gray-900 mb-2">Amount: &#8358;10,000</h4>
+            @elseif ($user->user_type == "Undergradute")
+                <h4 class="font-step-heading font-bold text-lg text-gray-900 mb-2">Amount: &#8358;2,500</h4>
+            @elseif ($user->user_type == "Corporate Organisation")
+                <h4 class="font-step-heading font-bold text-lg text-gray-900 mb-2">Amount: &#8358;25,000</h4>
             @endif
-            <!-- General Form Elements -->
-            <form action="/user/membership" method="POST" role="form" class="" enctype="multipart/form-data">
-             @csrf
-
-             <div class="row mb-3">
-                <div class="col-lg-12">
-                    @if($user->user_type=="Young Professional" || $user->user_type=="Corporate Professional")
-                    <h4>Amount: N10,000</h4>
-                    @elseif($user->user_type=="Undergradute")
-                    <h4>Amount: N2,500</h4>
-                    @elseif($user->user_type=="Corporate Organisation")
-                    <h4>Amount: N25,000</h4>
-                    @endif
-                    <h6>Account Name: Society for Technology & Energy Professionals</h6>
-                    <h6>Account Number: 1017242328</h6>
-                    <h6>Bank: Zenith</h6>
-                </div>
-             </div>
-             <hr>
-
-
-            <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">Upload Payment Proof </label>
-                <div class="col-sm-9">
-                    @if ($errors->has('payment_picture'))
-                        <span class="text-danger">{{ $errors->first('payment_picture') }}</span>
-                    @endif
-                <input type="file" name="payment_picture" class="form-control" placeholder="" value="" >
-                </div>
-            </div>  
-            
-
-            
-            
-    
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label"></label>
-                <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Upload Proof</button>
-                </div>
-            </div>
-    
-            </form><!-- End General Form Elements -->
-            <hr>
-            <div class="row mb-3">
-               
-                <div class="col-sm-9">
-                    <div class="card-body">
-                  <h5 class="card-title">Payment Proof </h5>
-
-                 
-                  <div class="d-flex align-items-center">
-                   
-                    <div class="ps-3">
-                      @if(empty($proof->payment_amount))
-                         <tr>
-                           <td>Nothing yet...</td>
-                         </tr>
-                        @else
-                         <tr>
-                           <td><img width="80%" src="{{ asset('uploads/payment/'.$proof->payment_picture) }}"></td>
-                         </tr>
-                        @endif
-                
-                    </div>
-                  </div>
-                 
-
-                </div>
-                </div>
-            </div> 
-    
+            <p class="text-sm text-gray-600">Account Name: Society for Technology &amp; Energy Professionals</p>
+            <p class="text-sm text-gray-600">Account Number: 1017242328</p>
+            <p class="text-sm text-gray-600">Bank: Zenith</p>
         </div>
-        </div>
-    
-    </div>
-    
-    </div>
-    </section>
-    
-    </main><!-- End #main -->
 
-    @include('dashboard.layouts.footer')
+        <hr class="border-gray-100 mb-6">
+
+        <div class="mb-6">
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Upload Payment Proof</label>
+            @if ($errors->has('payment_picture'))
+                <span class="block text-red-600 text-sm mb-1">{{ $errors->first('payment_picture') }}</span>
+            @endif
+            <input type="file" name="payment_picture" class="w-full text-sm text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-md file:border-0 file:bg-step-primary/10 file:text-step-primary file:font-semibold hover:file:bg-step-primary/20">
+        </div>
+
+        <button type="submit" class="bg-step-primary text-white font-step-heading font-semibold px-6 py-2.5 rounded-full hover:bg-step-accent transition-colors">Upload Proof</button>
+    </form>
+
+    <hr class="border-gray-100 my-8">
+
+    <div>
+        <h5 class="font-step-heading font-semibold text-lg text-step-primary mb-4">Payment Proof</h5>
+        @if (empty($proof->payment_amount))
+            <p class="text-gray-500 text-sm">Nothing yet...</p>
+        @else
+            <img src="{{ asset('uploads/payment/'.$proof->payment_picture) }}" class="max-w-xs rounded-md border border-gray-200">
+        @endif
+    </div>
+</div>
+
+@include('dashboard.layouts.tailwind.footer')

@@ -4,6 +4,7 @@ module.exports = {
     "./resources/views/exam/**/*.blade.php",
     "./resources/views/dev/**/*.blade.php",
     "./resources/views/frontend/**/*.blade.php",
+    "./resources/views/dashboard/**/*.blade.php",
     "./resources/js/app.js",
     "./resources/js/bootstrap.js",
   ],

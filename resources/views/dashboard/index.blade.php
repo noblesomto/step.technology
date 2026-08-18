@@ -1,121 +1,59 @@
-@include('dashboard.layouts.header')
-@include('dashboard.layouts.nav')
+@include('dashboard.layouts.tailwind.header')
+@include('dashboard.layouts.tailwind.nav', ['active' => 'dashboard'])
 
-<main id="main" class="main">
+<div class="mb-6">
+    <h1 class="font-step-heading font-bold text-2xl text-gray-900">Dashboard</h1>
+    <nav class="text-sm text-gray-500 mt-1">
+        <a href="/user/index" class="hover:text-step-primary">Home</a>
+        <span class="mx-1">/</span>
+        <span class="text-step-primary">Dashboard</span>
+    </nav>
+</div>
 
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/user/index">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
-    @if($user->address =="")
-    <div class="alert alert-warning">
-      <h5>Complete your registeration</h5> <a class="btn btn-primary" href="/user/profile">Proceed</a>
+@if ($user->address == "")
+    <div class="mb-4 flex items-center justify-between gap-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-md px-4 py-3">
+        <h5 class="font-step-heading font-semibold text-sm">Complete your registration</h5>
+        <a href="/user/profile" class="shrink-0 bg-step-primary text-white text-sm font-step-heading font-semibold px-4 py-1.5 rounded-full hover:bg-step-accent transition-colors">Proceed</a>
     </div>
-    @endif
+@endif
 
-    @if(empty($user->member_status) && (!empty($user->address)))
-    <div class="alert alert-warning">
-      <h5>Pay your Membership Fee</h5> <a class="btn btn-primary" href="/user/membership">Proceed</a>
+@if (empty($user->member_status) && !empty($user->address))
+    <div class="mb-6 flex items-center justify-between gap-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-md px-4 py-3">
+        <h5 class="font-step-heading font-semibold text-sm">Pay your Membership Fee</h5>
+        <a href="/user/membership" class="shrink-0 bg-step-primary text-white text-sm font-step-heading font-semibold px-4 py-1.5 rounded-full hover:bg-step-accent transition-colors">Proceed</a>
     </div>
-    @endif
+@endif
 
-    <section class="section dashboard">
-      <div class="row">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Journals/Publications</h5>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
+                <i class="fa fa-book text-step-primary"></i>
+            </div>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">0</h6>
+        </div>
+    </div>
 
-        <!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Certifications Available</h5>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
+                <i class="fa fa-users text-step-primary"></i>
+            </div>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">0</h6>
+        </div>
+    </div>
 
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card sales-card">
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Membership ID</h5>
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
+                <i class="fa fa-eye text-step-primary"></i>
+            </div>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">Pending...</h6>
+        </div>
+    </div>
+</div>
 
-               
-
-                <div class="card-body">
-                  <h5 class="card-title">Journals/Publications</h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-book"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>0</h6>
-                      
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End Sales Card -->
-
-            <!-- Revenue Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
-
-              
-
-                <div class="card-body">
-                  <h5 class="card-title">Certifications Available </h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>0</h6>
-                      
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End Revenue Card -->
-
-            <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
-
-              <div class="card info-card customers-card">
-
-            
-
-                <div class="card-body">
-                  <h5 class="card-title">Membership ID </h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-eye"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>{{ $user->step_id }}</h6>
-                    
-
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div><!-- End Customers Card -->
-
-           
-              </div>
-            </div><!-- End Top Selling -->
-
-          </div>
-        </div><!-- End Left side columns -->
-
-   
-
-      </div>
-    </section>
-
-  </main><!-- End #main -->
-  @include('dashboard.layouts.footer')
+@include('dashboard.layouts.tailwind.footer')
