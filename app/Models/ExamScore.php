@@ -20,6 +20,7 @@ class ExamScore extends Model
      */
     protected $fillable = [
         'user_id',
+        'exam_batch_id',
         'exam_session_id',
         'score',
         'total_questions',
@@ -62,6 +63,11 @@ class ExamScore extends Model
     public function progress(): BelongsTo
     {
         return $this->belongsTo(ExamProgress::class, 'exam_session_id', 'exam_session_id');
+    }
+
+    public function batch(): BelongsTo
+    {
+        return $this->belongsTo(ExamBatch::class, 'exam_batch_id');
     }
 
     /**

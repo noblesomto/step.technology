@@ -9,6 +9,7 @@ use App\Models\Listing;
 use App\Models\Booking;
 use App\Models\Deposit;
 use App\Models\Exam;
+use App\Models\ExamBatch;
 use App\Models\ExamProgress;
 use App\Models\ExamScore;
 use Carbon\Carbon;
@@ -22,7 +23,7 @@ class UserController extends Controller
         $title = "My Account - " . config('global.site_name');
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        $exam = ExamScore::where('user_id', $user_id)->where('status','approved')->first();
+        $exam = ExamScore::where('user_id', $user_id)->where('status','approved')->orderBy('created_at', 'desc')->first();
         return view('exam.dashboard.index', compact('title','user','exam'));
     }
 
@@ -33,11 +34,18 @@ class UserController extends Controller
         $user = User::where('user_id', $user_id)->first();
         $examDurationMinutes = 35;
 
-        // 🔥 CHECK IF USER HAS ALREADY COMPLETED AN EXAM
-        $completedExam = ExamScore::where('user_id', $user_id)->first();
+        // 🔥 EXAMS ONLY RUN DURING AN OPEN SITTING (batch), MANAGED BY ADMIN
+        $activeBatch = ExamBatch::active();
+        if (!$activeBatch) {
+            return redirect()->route('user.index')
+                ->with('info', 'There is no exam sitting open right now. Please check back later.');
+        }
+
+        // 🔥 CHECK IF USER HAS ALREADY COMPLETED THIS SITTING
+        $completedExam = ExamScore::where('user_id', $user_id)->where('exam_batch_id', $activeBatch->id)->first();
         if ($completedExam) {
             return redirect()->route('user.exam-done')
-                ->with('info', 'You have already completed the exam.');
+                ->with('info', 'You have already completed this exam sitting.');
         }
 
         // 🔥 GET OR CREATE EXAM SESSION
@@ -145,7 +153,8 @@ class UserController extends Controller
             // 🔥 SAVE FINAL EXAM SCORE
             $exam = ExamScore::updateOrCreate(
                 [
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
+                    'exam_batch_id' => ExamBatch::active()?->id,
                 ],
                 [
                     'exam_session_id' => $validated['exam_session_id'],
@@ -213,7 +222,7 @@ class UserController extends Controller
             DB::beginTransaction();
 
             ExamScore::updateOrCreate(
-                ['user_id' => $user_id],
+                ['user_id' => $user_id, 'exam_batch_id' => ExamBatch::active()?->id],
                 [
                     'exam_session_id' => $exam_session_id,
                     'score' => $score,
@@ -257,7 +266,7 @@ class UserController extends Controller
             DB::beginTransaction();
 
             ExamScore::updateOrCreate(
-                ['user_id' => $session->user_id],
+                ['user_id' => $session->user_id, 'exam_batch_id' => ExamBatch::active()?->id],
                 [
                     'exam_session_id' => $session->exam_session_id,
                     'score' => $score,

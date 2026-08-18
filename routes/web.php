@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DevPreviewController;
 use App\Http\Controllers\Exam\Admin\ManageExamController;
 use App\Http\Controllers\Exam\Admin\AdminController as ExamAdminController;
+use App\Http\Controllers\Exam\Admin\ExamBatchController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SettingsController;
 
@@ -122,7 +123,21 @@ Route::get('/admin/questions', [ManageExamController::class, 'index'])->name('qu
 Route::get('/admin/questions/{id}/edit', [ManageExamController::class, 'edit'])->name('questions.edit')->middleware('adminsession');
 Route::put('/admin/questions/{id}', [ManageExamController::class, 'update'])->name('questions.update')->middleware('adminsession');
 Route::get('/admin/enrollments', [ExamAdminController::class, 'enrollments'])->middleware('adminsession');
-Route::get('/admin/exam-status/{id}/{status}', [ExamAdminController::class, 'exam_status'])->middleware('adminsession');
+Route::post('/admin/enrollments/bulk-status', [ExamAdminController::class, 'bulkUpdateStatus'])->middleware('adminsession');
+Route::get('/admin/enrollments/export/excel', [ExamAdminController::class, 'exportExcel'])->middleware('adminsession');
+Route::get('/admin/enrollments/export/pdf', [ExamAdminController::class, 'exportPdf'])->middleware('adminsession');
+Route::get('/admin/enrollments/{id}/edit', [ExamAdminController::class, 'editScore'])->middleware('adminsession');
+Route::put('/admin/enrollments/{id}', [ExamAdminController::class, 'updateScore'])->middleware('adminsession');
+Route::put('/admin/enrollments/{id}/status/{status}', [ExamAdminController::class, 'exam_status'])->middleware('adminsession');
+
+// Exam sittings (batches)
+Route::get('/admin/exam-batches', [ExamBatchController::class, 'index'])->middleware('adminsession');
+Route::get('/admin/exam-batches/create', [ExamBatchController::class, 'create'])->middleware('adminsession');
+Route::post('/admin/exam-batches', [ExamBatchController::class, 'store'])->middleware('adminsession');
+Route::get('/admin/exam-batches/{examBatch}/edit', [ExamBatchController::class, 'edit'])->middleware('adminsession');
+Route::put('/admin/exam-batches/{examBatch}', [ExamBatchController::class, 'update'])->middleware('adminsession');
+Route::put('/admin/exam-batches/{examBatch}/activate', [ExamBatchController::class, 'activate'])->middleware('adminsession');
+Route::put('/admin/exam-batches/{examBatch}/deactivate', [ExamBatchController::class, 'deactivate'])->middleware('adminsession');
 
 // Settings
 Route::get('/admin/settings', [SettingsController::class, 'edit'])->middleware('adminsession');
