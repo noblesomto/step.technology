@@ -1,111 +1,31 @@
-@include('frontend.layouts.header')
-@include('frontend.layouts.nav')
+@include('frontend.layouts.tailwind.header')
+@include('frontend.layouts.tailwind.nav')
+@include('frontend.layouts.tailwind.page-header', ['pageTitle' => 'Our Events', 'breadcrumb' => 'Events'])
 
-
-
-
-<!--Start breadcrumb area-->     
-<section class="breadcrumb-area" style="background-image: url({{ asset('frontend/img/banner.jpg') }});">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="breadcrumbs">
-                    <h1>Our Event</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--End breadcrumb area-->
-
-<!--Start breadcrumb bottom area-->     
-<section class="breadcrumb-bottom-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="left pull-left">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                        <li class="active">Event</li>
-                    </ul>
-                </div>
-                <div class="right pull-right">
-                    <a href="#">
-                        <span><i class="fa fa-share-alt" aria-hidden="true"></i>Share</span> 
-                    </a>   
-                </div>    
-            </div>
-        </div>
-    </div>
-</section>
-<!--End breadcrumb bottom area-->
-
-<!--Start blog area-->
-<section id="blog-area" class="blog-default-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="blog-post">
-                    <div class="row">
-                        @foreach ( $event as $row )
-                        <!--Start single blog post-->
-                        <div class="col-md-4 blog-single-post">
-                            <div class="single-blog-item">
-                                <div class="img-holder">
-                                    <img src="{{ asset('uploads/thumbnails/'.$row->event_picture) }}" alt="{{ $row->event_title }}">
-                                    <div class="overlay-style-one">
-                                        <div class="box">
-                                            <div class="content">
-                                                <a href="/events/{{ $row->event_id }}/{{ $row->event_slug }}"><i class="fa fa-link" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="post-date">
-                                        <h5>{{ $row->created_at->format('j F');  }}</h5>    
-                                    </div>
-                                </div>
-                                <div class="text-holder">
-                                    
-                                    <a href="/events/{{ $row->event_id }}/{{ $row->event_slug }}">
-                                        <h3 class="blog-title">{!! Str::words($row->event_title, 10) !!}</h3>
-                                    </a>
-                                    <div class="text">
-                                        {!! Str::words($row->event_body, 15) !!}
-                                    </div>
-                                    <div class="bottom">
-                                        <div class="left pull-left">
-                                            <a href="/events/{{ $row->event_id }}/{{ $row->event_slug }}">Read More</a>
-                                        </div>
-                                        <div class="right pull-right">
-                                            
-                                        </div>    
-                                    </div>
-                                </div>    
-                            </div>    
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @foreach ($event as $row)
+                <a href="/events/{{ $row->event_id }}/{{ $row->event_slug }}" class="group block bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="{{ asset('uploads/thumbnails/'.$row->event_picture) }}" alt="{{ $row->event_title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <span class="absolute top-3 left-3 bg-step-primary text-white text-xs font-step-heading font-semibold px-3 py-1 rounded-full">{{ $row->created_at->format('j F') }}</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-step-heading font-semibold text-lg text-gray-900 group-hover:text-step-primary transition-colors">{{ Str::words($row->event_title, 10) }}</h3>
+                        <div class="mt-2 text-sm text-gray-600">{!! Str::words(strip_tags($row->event_body), 15) !!}</div>
+                        <div class="mt-4">
+                            <span class="text-step-primary font-step-heading font-semibold text-sm">Read More</span>
                         </div>
-                        <!--End single blog post-->
-                        @endforeach
-                        
-     
-                      
                     </div>
-                    <!--Start post pagination-->
-                    <div class="row">
-                        <div class="col-md-12 text-center"> 
-                            {!! $event->links() !!}
-                        </div> 
-                    </div>
-                    <!--End post pagination-->
-                </div>
-            </div>
+                </a>
+            @endforeach
+        </div>
+
+        <div class="mt-12">
+            {{ $event->links('pagination::tailwind') }}
         </div>
     </div>
 </section>
- 
 
-
-
-
-
-@include('frontend.layouts.footer')
+@include('frontend.layouts.tailwind.footer')
