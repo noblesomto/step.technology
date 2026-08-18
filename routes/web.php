@@ -72,6 +72,13 @@ Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_pas
 Route::get('/admin/index', [AdminController::class, 'index'])->middleware('adminsession');
 Route::get('/admin/users', [AdminController::class, 'users'])->middleware('adminsession');
 Route::get('/admin/export-users', [AdminController::class, 'export'])->middleware('adminsession');
+Route::get('/admin/users/create', [AdminController::class, 'createUser'])->middleware('adminsession');
+Route::post('/admin/users', [AdminController::class, 'storeUser'])->middleware('adminsession');
+Route::get('/admin/users/{user_id}', [AdminController::class, 'showUser'])->middleware('adminsession');
+Route::get('/admin/users/{user_id}/edit', [AdminController::class, 'editUser'])->middleware('adminsession');
+Route::put('/admin/users/{user_id}', [AdminController::class, 'updateUser'])->middleware('adminsession');
+Route::delete('/admin/users/{user_id}', [AdminController::class, 'destroyUser'])->middleware('adminsession');
+Route::put('/admin/users/{user_id}/status/{status}', [AdminController::class, 'updateUserStatus'])->middleware('adminsession');
 Route::get('/admin/logout', [AdminController::class, 'logout'])->middleware('adminsession');
 
 

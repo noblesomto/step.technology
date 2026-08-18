@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Admin;
@@ -104,70 +105,159 @@ class AdminController extends Controller
       
     }
 
-    public function inactive_users()
-    {   
-        $show = User::orderBy('created_at', 'desc')->where('acc_status', 0)->paginate(20);
-        $title = "Inactive Users";
-        return view('backend.affiliate.users', compact('title', 'show'));
-    }
-
-
-
-    public function search(Request $request)
-    {   
+    public function users(Request $request)
+    {
         $search = $request->input('search');
-        $show = DB::table('users')
-                ->where('first_name', 'LIKE', '%'.$search.'%')
-                ->orwhere('last_name', 'LIKE', '%'.$search.'%')
-                ->orwhere('email', 'LIKE', '%'.$search.'%')
-                ->paginate(20);
-        $title = "Active Users";
-        return view('backend.search', compact('title', 'show'));
+
+        $user = User::when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('first_name', 'LIKE', '%'.$search.'%')
+                      ->orWhere('last_name', 'LIKE', '%'.$search.'%')
+                      ->orWhere('email', 'LIKE', '%'.$search.'%')
+                      ->orWhere('phone', 'LIKE', '%'.$search.'%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(20)
+            ->withQueryString();
+
+        $title = "Users -" . config('global.site_name');
+        return view('backend.users.index', compact('title', 'user', 'search'));
     }
 
-    public function users()
-    {   
-        $user = User::orderBy('created_at', 'desc')->paginate(20);
-        $title = "Active Users -" . config('global.site_name');
-        return view('backend.users', compact('title', 'user'));
+    public function createUser()
+    {
+        $title = "New User -" . config('global.site_name');
+        return view('backend.users.create', compact('title'));
     }
 
-    public function view_user(Request $request, $user_id)
-    {   
-        $user = User::where('user_id', $user_id)->first();
-        $title = "User Details";
-        return view('backend.view-user', compact('title', 'user'));
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            'title' => 'nullable|string|max:20',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'gender' => 'nullable|string|max:20',
+            'phone' => 'required|string|max:255|unique:users,phone',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|min:6',
+            'user_type' => 'required|string|max:255',
+            'acc_status' => 'required|in:0,1',
+            'member_status' => 'nullable|string|max:255',
+            'profession' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
+            'school_name' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+        ]);
+
+        User::create([
+            'user_id' => $this->generateUniqueUserId(),
+            'title' => $request->input('title'),
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'gender' => $request->input('gender'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'user_type' => $request->input('user_type'),
+            'acc_status' => $request->input('acc_status'),
+            'member_status' => $request->input('member_status'),
+            'profession' => $request->input('profession'),
+            'company_name' => $request->input('company_name'),
+            'school_name' => $request->input('school_name'),
+            'address' => $request->input('address'),
+            'city' => $request->input('city'),
+            'state' => $request->input('state'),
+        ]);
+
+        return redirect('/admin/users')->with('status', ['text' => 'User created successfully', 'type' => 'success']);
     }
 
-    public function disable_user($user_id, $status)
-    {   
-        $show = DB::table('users')
-            ->where('user_id', $user_id)
-            ->update([
-                'acc_status'=> $status,
-            ]);
-        return redirect("admin/view-user/".$user_id)->with('status', ['text'=>'User Disabled','type'=>'success']);
-      
+    public function showUser($user_id)
+    {
+        $user = User::where('user_id', $user_id)->firstOrFail();
+        $payment = Payment::where('user_id', $user_id)->first();
+        $examScore = DB::table('exam_scores')->where('user_id', $user_id)->first();
+        $title = "User Details -" . config('global.site_name');
+        return view('backend.users.show', compact('title', 'user', 'payment', 'examScore'));
     }
 
-    public function export() 
+    public function editUser($user_id)
+    {
+        $user = User::where('user_id', $user_id)->firstOrFail();
+        $title = "Edit User -" . config('global.site_name');
+        return view('backend.users.edit', compact('title', 'user'));
+    }
+
+    public function updateUser(Request $request, $user_id)
+    {
+        $user = User::where('user_id', $user_id)->firstOrFail();
+
+        $request->validate([
+            'title' => 'nullable|string|max:20',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'gender' => 'nullable|string|max:20',
+            'phone' => 'required|string|max:255|unique:users,phone,'.$user->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'nullable|min:6',
+            'user_type' => 'required|string|max:255',
+            'acc_status' => 'required|in:0,1',
+            'member_status' => 'nullable|string|max:255',
+            'profession' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
+            'school_name' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+        ]);
+
+        $data = $request->only([
+            'title', 'first_name', 'last_name', 'gender', 'phone', 'email',
+            'user_type', 'acc_status', 'member_status', 'profession',
+            'company_name', 'school_name', 'address', 'city', 'state',
+        ]);
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->input('password'));
+        }
+
+        $user->update($data);
+
+        return redirect('/admin/users/'.$user_id)->with('status', ['text' => 'User updated successfully', 'type' => 'success']);
+    }
+
+    public function updateUserStatus($user_id, $status)
+    {
+        User::where('user_id', $user_id)->update(['acc_status' => $status]);
+
+        return redirect()->back()->with('status', ['text' => $status == 1 ? 'User verified' : 'User marked unverified', 'type' => 'success']);
+    }
+
+    public function export()
     {
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 
-    public function delete_user($user_id) 
+    protected function generateUniqueUserId(): string
     {
-        $user = User::where('user_id', $user_id)->first();
+        do {
+            $id = (string) random_int(10000, 99999);
+        } while (User::where('user_id', $id)->exists());
+
+        return $id;
+    }
+
+    public function destroyUser($user_id)
+    {
+        $user = User::where('user_id', $user_id)->firstOrFail();
         $user->delete();
 
-        $client = Client::where('user_id', $user_id)->first();
-        $client->delete();
+        Payment::where('user_id', $user_id)->delete();
 
-        $pay = Payment::where('user_id', $user_id)->first();
-        $pay->delete();
-
-        return redirect("admin/active-users")->with('status', ['text'=>'A user was deleted','type'=>'success']);
-
+        return redirect('/admin/users')->with('status', ['text' => 'User deleted successfully', 'type' => 'success']);
     }
 
     public function logout(Request $request)

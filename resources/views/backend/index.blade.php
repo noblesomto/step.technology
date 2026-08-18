@@ -126,7 +126,7 @@
         </div>
         <div class="divide-y divide-gray-100">
             @forelse ($recentUsers as $user)
-                <div class="flex items-center justify-between px-5 py-3">
+                <a href="/admin/users/{{ $user->user_id }}" class="flex items-center justify-between px-5 py-3 hover:bg-gray-50">
                     <div>
                         <p class="text-sm font-medium text-gray-900">{{ $user->first_name }} {{ $user->last_name }}</p>
                         <p class="text-xs text-gray-500">{{ $user->email }}</p>
@@ -139,7 +139,7 @@
                         @endif
                         <p class="text-xs text-gray-400 mt-1">{{ $user->created_at->diffForHumans() }}</p>
                     </div>
-                </div>
+                </a>
             @empty
                 <p class="px-5 py-6 text-sm text-gray-400 text-center">No registrations yet.</p>
             @endforelse
