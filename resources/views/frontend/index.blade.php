@@ -51,7 +51,7 @@
                 <p class="text-gray-600 leading-relaxed">In order to assess, register, certify and license registrable technology and energy professionals in Nigeria and beyond, the Council for Registration of Technology and Energy Professionals (CORETEP) under the Society of Technology and Energy Professionals (STEP) was inaugurated during her first council meeting to carry out the aforementioned functions pending when their bill is assented to by the President of the Federal Republic of Nigeria. The need to enhance effective technology and energy professional practice in Nigeria, review and adopt a technology and energy council examination, encourage local manufacturing, facilitate digital transformation in our workplace, and foster capacity building so as to meet global standards for Nigeria's economic growth and sustainability were the reasons for this Technology and Energy Council Examination.</p>
                 <a href="/about-coretep" class="inline-block mt-6 bg-step-primary text-white font-step-heading font-semibold px-6 py-3 rounded-full hover:bg-step-accent transition-colors">More About CORETEP</a>
             </div>
-            <img src="{{ asset('frontend/img/4620.jpg') }}" alt="About CORETEP" class="order-1 lg:order-2 w-full h-80 object-cover rounded-lg">
+            <img src="{{ asset('frontend/img/4620.jpg') }}" alt="About CORETEP" loading="lazy" class="order-1 lg:order-2 w-full h-80 object-cover rounded-lg">
         </div>
     </div>
 </section>
@@ -76,7 +76,7 @@
             @foreach ($blogpost as $row)
                 <a href="/blog/{{ $row->blog_id }}/{{ $row->blog_slug }}" class="group block bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="{{ asset('uploads/thumbnails/'.$row->blog_picture) }}" alt="{{ $row->blog_title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('uploads/thumbnails/'.$row->blog_picture) }}" alt="{{ $row->blog_title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         <span class="absolute top-3 left-3 bg-step-primary text-white text-xs font-step-heading font-semibold px-3 py-1 rounded-full">{{ $row->created_at->format('j F') }}</span>
                     </div>
                     <div class="p-5">
@@ -101,7 +101,7 @@
         <div class="flex flex-wrap items-center justify-center gap-10">
             @foreach (['cert-1','cert-6','cert-3','cert-4','cert-5'] as $cert)
                 <a href="/certifications" title="STEP Certifications" class="opacity-70 hover:opacity-100 transition-opacity">
-                    <img src="{{ asset('frontend/img/cert/'.$cert.'.png') }}" alt="STEP Certifications" class="h-16 w-auto">
+                    <img src="{{ asset('frontend/img/cert/'.$cert.'.png') }}" alt="STEP Certifications" loading="lazy" class="h-16 w-auto">
                 </a>
             @endforeach
         </div>

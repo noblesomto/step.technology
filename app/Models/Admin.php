@@ -9,4 +9,10 @@ class Admin extends Model
 {
     use HasFactory;
     protected $fillable = ['admin_id', 'username','password'];
+
+    protected $hidden = ['password'];
+
+    protected $casts = [
+        'password' => 'hashed',
+    ];
 }

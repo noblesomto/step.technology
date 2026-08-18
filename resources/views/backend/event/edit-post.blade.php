@@ -33,7 +33,7 @@
                 <span class="block text-red-600 text-sm mb-1">{{ $errors->first('event_picture') }}</span>
             @endif
             <input type="file" name="event_picture" class="text-sm text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-md file:border-0 file:bg-step-primary/10 file:text-step-primary file:font-semibold hover:file:bg-step-primary/20">
-            <img src="{{ asset('uploads/thumbnails/'.$post->event_picture) }}" class="w-36 rounded border border-gray-200 mt-3">
+            <img src="{{ asset('uploads/thumbnails/'.$post->event_picture) }}" loading="lazy" class="w-36 rounded border border-gray-200 mt-3">
         </div>
 
         @include('backend.layouts.tailwind.trix-editor', ['name' => 'event_body', 'label' => 'Event Body', 'value' => $post->event_body])

@@ -31,7 +31,7 @@
                         <td class="px-4 py-3 text-gray-600">{{ $row->user_type }}</td>
                         <td class="px-4 py-3">
                             <a target="_blank" href="{{ asset('uploads/payment/'.$row->payment_picture) }}">
-                                <img src="{{ asset('uploads/payment/'.$row->payment_picture) }}" class="w-20 rounded border border-gray-200">
+                                <img src="{{ asset('uploads/payment/'.$row->payment_picture) }}" loading="lazy" class="w-20 rounded border border-gray-200">
                             </a>
                         </td>
                         <td class="px-4 py-3">

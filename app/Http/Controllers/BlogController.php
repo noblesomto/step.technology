@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use Image;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -143,5 +144,62 @@ class BlogController extends Controller
 
     }
 
+
+    public function trixUpload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048'
+        ]);
+
+        $file = $request->file('file');
+        $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads/trix-images'), $fileName);
+
+        return response()->json([
+            'url' => asset('uploads/trix-images/' . $fileName)
+        ]);
+    }
+
+
+    public function upload(Request $request)
+    {
+        try {
+            $request->validate([
+                'upload' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            if ($request->hasFile('upload')) {
+                $file = $request->file('upload');
+
+                // Generate unique filename
+                $fileName = 'ckeditor_' . time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+                // Store in public/uploads directory
+                $file->move(public_path('uploads/ckeditor'), $fileName);
+
+                $url = asset('uploads/ckeditor/' . $fileName);
+
+                return response()->json([
+                    'uploaded' => true,
+                    'url' => $url
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'uploaded' => false,
+                'error' => [
+                    'message' => $e->getMessage()
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'uploaded' => false,
+            'error' => [
+                'message' => 'File upload failed'
+            ]
+        ]);
+    }
 
 }

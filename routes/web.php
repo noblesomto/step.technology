@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DevPreviewController;
 use App\Http\Controllers\Exam\Admin\ManageExamController;
 use App\Http\Controllers\Exam\Admin\AdminController as ExamAdminController;
+use App\Http\Controllers\SitemapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,8 @@ Route::domain('exams.step.technology')->group(function () {
 // Unlinked internal preview of the Tailwind design system foundation.
 // Not part of the live site — see docs/superpowers/specs/2026-08-18-tailwind-design-system-foundation-design.md
 Route::get('/dev/style-guide', [DevPreviewController::class, 'styleGuide']);
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 
 Route::get('/', [PageController::class, 'index']);
 Route::get('/about', [PageController::class, 'about']);

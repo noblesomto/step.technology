@@ -331,10 +331,8 @@ class AccountController extends Controller
             $username = $request->username;
             $password = $request->password;
 
-            $login = Admin::where('username', $username)
-               ->where('password', md5($password))
-               ->first();
-            if ($login) {
+            $login = Admin::where('username', $username)->first();
+            if ($login && Hash::check($password, $login->password)) {
                 $admin_id = $login->admin_id;
                 $request->session()->put('admin_id', $admin_id);
 

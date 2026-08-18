@@ -50,7 +50,7 @@
         @if (empty($proof->payment_amount))
             <p class="text-gray-500 text-sm">Nothing yet...</p>
         @else
-            <img src="{{ asset('uploads/payment/'.$proof->payment_picture) }}" class="max-w-xs rounded-md border border-gray-200">
+            <img src="{{ asset('uploads/payment/'.$proof->payment_picture) }}" loading="lazy" class="max-w-xs rounded-md border border-gray-200">
         @endif
     </div>
 </div>
