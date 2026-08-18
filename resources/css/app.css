@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  @apply font-bold px-6 rounded  text-[14px]/[40px];
+}
+
+.btn2 {
+  @apply font-bold  rounded  text-[14px]/[40px];
+}
+
+.btn-primary {
+  @apply bg-transparent hover:bg-primary text-dark_green font-semibold hover:text-dark_green  border-2 border-dark_green hover:border-dark_green rounded-full;
+}
+
+.btn-secondary {
+  @apply bg-secondary-100 hover:bg-secondary-100 text-dark_green font-bold rounded-full;
+}
+
+.btn-red {
+  @apply text-white bg-button hover:bg-red-300;
+}
+
+.btn-yellow {
+  @apply text-white bg-yellow-600 hover:bg-yellow-500;
+}
+
+.btn-green {
+  @apply text-white bg-green-600 hover:bg-green-500;
+}
+
+.btn-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.nav{
+	@apply text-[14px] py-2 font-bold text-text hover:text-red-400  hover:border-b-4 hover:border-b-red-400 ;
+}
+
+.booked {
+    @apply bg-red-400 text-white rounded-lg;
+  }
+
+.available {
+    @apply bg-green-200 text-gray-600 rounded-lg;
+  }

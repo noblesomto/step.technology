@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DevPreviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,20 @@ use App\Http\Controllers\UserController;
 |
 */
 
+// Exam portal (exams.step.technology) — merged in from the standalone exam
+// app. Domain-scoped so its routes (many of which share the same paths as
+// step's own, e.g. /login, /admin/index) only match on that subdomain.
+Route::domain('exams.step.technology')->group(function () {
+    require base_path('routes/exam.php');
+});
+
+// Unlinked internal preview of the Tailwind design system foundation.
+// Not part of the live site — see docs/superpowers/specs/2026-08-18-tailwind-design-system-foundation-design.md
+Route::get('/dev/style-guide', [DevPreviewController::class, 'styleGuide']);
+
 Route::get('/', [PageController::class, 'index']);
 Route::get('/about', [PageController::class, 'about']);
+Route::get('/about-coretep', [PageController::class, 'about_coretep']);
 Route::get('/step-support', [PageController::class, 'support']);
 Route::get('/memberships', [PageController::class, 'membership']);
 Route::get('/trainings', [PageController::class, 'trainings']);
@@ -33,6 +46,8 @@ Route::get('/events', [PageController::class, 'event']);
 Route::get('/events/{event_id}/{slug}', [PageController::class, 'event_detials']);
 Route::any('/adminlogin', [PageController::class, 'adminlogin']);
 Route::get('/refresh_captcha', [PageController::class, 'refreshCaptcha'])->name('refresh_captcha');
+Route::get('/email', [PageController::class, 'email']);
+Route::any('/ICTES2025', [PageController::class, 'conference']);
 
 //Account Section
 Route::any('/join', [AccountController::class, 'login']);
@@ -49,6 +64,8 @@ Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_pas
 
 //Admin Section
 Route::get('/admin/index', [AdminController::class, 'index'])->middleware('adminsession');
+Route::get('/admin/users', [AdminController::class, 'users'])->middleware('adminsession');
+Route::get('/admin/export-users', [AdminController::class, 'export'])->middleware('adminsession');
 Route::get('/admin/logout', [AdminController::class, 'logout'])->middleware('adminsession');
 
 
@@ -69,6 +86,9 @@ Route::any('/blogpost/post-status/{blog_id}/{status}', [BlogController::class, '
 Route::any('/blogpost/edit-post/{blog_id}', [BlogController::class, 'edit_post'])->middleware('adminsession');
 Route::any('/blogpost/delete-post/{blog_id}', [BlogController::class, 'delete_post'])->middleware('adminsession');
 
+// Trix Upload
+Route::post('/trix-upload', [BlogController::class, 'trixUpload'])->name('trix.upload');
+Route::post('/ckeditor/upload', [BlogController::class, 'upload'])->name('ckeditor.upload');
 
 //User Dashboard Section
 Route::get('/user/index', [UserController::class, 'index'])->middleware('usersession');
@@ -76,9 +96,8 @@ Route::any('/user/profile', [UserController::class, 'profile'])->middleware('use
 Route::any('/user/membership', [UserController::class, 'membership'])->middleware('usersession');
 Route::get('/user/logout', [UserController::class, 'logout'])->middleware('usersession');
 
-Route::post('ckeditor/upload', [PageController::class, 'ckeditor'])->name('ckeditor.image-upload');
-
-
 //Payment Confirmation
 Route::any('/admin/payment', [AdminController::class, 'payment']);
 Route::any('/admin/confirm-payment/{user_id}', [AdminController::class, 'confirm_payment']);
+
+
