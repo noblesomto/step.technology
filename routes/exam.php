@@ -15,13 +15,13 @@ use App\Http\Controllers\Exam\AccountController;
 |
 */
 
-Route::any('/', [AccountController::class, 'login']);
-Route::any('/login', [AccountController::class, 'login']);
+Route::any('/', [AccountController::class, 'login'])->middleware('throttle:10,1');
+Route::any('/login', [AccountController::class, 'login'])->middleware('throttle:10,1');
 Route::get('/verifyaccount/{id}/{token}', [AccountController::class, 'verifyaccount']);
-Route::any('/authenticate', [AccountController::class, 'authenticate']);
-Route::any('/resend-otp', [AccountController::class, 'resend_otp']);
-Route::any('/forgot-password', [AccountController::class, 'forgot_password']);
-Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_password']);
+Route::any('/authenticate', [AccountController::class, 'authenticate'])->middleware('throttle:10,1');
+Route::any('/resend-otp', [AccountController::class, 'resend_otp'])->middleware('throttle:10,1');
+Route::any('/forgot-password', [AccountController::class, 'forgot_password'])->middleware('throttle:10,1');
+Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_password'])->middleware('throttle:10,1');
 
 // Admin login now lives on the unified admin CMS (step.technology) —
 // redirect rather than serve a second login form here.

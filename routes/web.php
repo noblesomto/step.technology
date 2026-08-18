@@ -46,22 +46,22 @@ Route::get('/blog', [PageController::class, 'blog']);
 Route::get('/blog/{blog_id}/{slug}', [PageController::class, 'blog_detials']);
 Route::get('/events', [PageController::class, 'event']);
 Route::get('/events/{event_id}/{slug}', [PageController::class, 'event_detials']);
-Route::any('/adminlogin', [PageController::class, 'adminlogin']);
+Route::any('/adminlogin', [PageController::class, 'adminlogin'])->middleware('throttle:10,1');
 Route::get('/refresh_captcha', [PageController::class, 'refreshCaptcha'])->name('refresh_captcha');
 Route::get('/email', [PageController::class, 'email']);
 Route::any('/ICTES2025', [PageController::class, 'conference']);
 
 //Account Section
-Route::any('/join', [AccountController::class, 'login']);
-Route::any('/login', [AccountController::class, 'login']);
-Route::any('/register-undergraduate', [AccountController::class, 'register_undergraduate']);
-Route::any('/register-young-professional', [AccountController::class, 'register_young_professional']);
-Route::any('/register', [AccountController::class, 'register_young_professional']);
-Route::any('/register-corporate-professional', [AccountController::class, 'register_corporate_professional']);
-Route::any('/register-corporate-organization', [AccountController::class, 'register_corporate_organization']);
+Route::any('/join', [AccountController::class, 'login'])->middleware('throttle:10,1');
+Route::any('/login', [AccountController::class, 'login'])->middleware('throttle:10,1');
+Route::any('/register-undergraduate', [AccountController::class, 'register_undergraduate'])->middleware('throttle:10,1');
+Route::any('/register-young-professional', [AccountController::class, 'register_young_professional'])->middleware('throttle:10,1');
+Route::any('/register', [AccountController::class, 'register_young_professional'])->middleware('throttle:10,1');
+Route::any('/register-corporate-professional', [AccountController::class, 'register_corporate_professional'])->middleware('throttle:10,1');
+Route::any('/register-corporate-organization', [AccountController::class, 'register_corporate_organization'])->middleware('throttle:10,1');
 Route::get('/verifyaccount/{id}/{token}', [AccountController::class, 'verifyaccount']);
-Route::any('/forgot-password', [AccountController::class, 'forgot_password']);
-Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_password']);
+Route::any('/forgot-password', [AccountController::class, 'forgot_password'])->middleware('throttle:10,1');
+Route::any('/reset-password/{id}/{token}', [AccountController::class, 'reset_password'])->middleware('throttle:10,1');
 
 
 //Admin Section

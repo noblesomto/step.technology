@@ -10,6 +10,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Payment;
+use App\Models\Blog;
+use App\Models\Event;
 use Carbon\CarbonInterval;
 use App\Mail\PaymentMail;
 use Mail;
@@ -24,12 +26,14 @@ class AdminController extends Controller
         $title = "Admin Section -" . config('global.site_title');
         $count_users = User::count();
         $count_tvshow = "7";
+        $count_blog = Blog::count();
+        $count_events = Event::count();
 
         $examCounts = DB::table('exam_scores')
             ->selectRaw('COUNT(*) as total, SUM(CASE WHEN status = "approved" THEN 1 ELSE 0 END) as approved, SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) as pending')
             ->first();
 
-        return view('backend.index', compact('title','count_users','count_tvshow','examCounts'));
+        return view('backend.index', compact('title','count_users','count_tvshow','count_blog','count_events','examCounts'));
     }
 
     

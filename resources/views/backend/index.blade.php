@@ -17,7 +17,7 @@
             <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
                 <i class="fa fa-book text-step-primary"></i>
             </div>
-            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ \App\Models\Blog::count() }}</h6>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ $count_blog }}</h6>
         </div>
     </div>
 
@@ -37,7 +37,7 @@
             <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
                 <i class="fa fa-calendar text-step-primary"></i>
             </div>
-            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ \App\Models\Event::count() }}</h6>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ $count_events }}</h6>
         </div>
     </div>
 </div>
