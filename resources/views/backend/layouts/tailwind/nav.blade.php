@@ -84,6 +84,9 @@
         </a>
 
         <div class="pt-4 mt-4 border-t border-white/10">
+            <a href="/admin/settings" class="flex items-center gap-3 px-4 py-2.5 rounded-md {{ $active === 'settings' ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+                <i class="fa fa-cog w-4"></i> Settings
+            </a>
             <a href="/admin/logout" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-white/70 hover:bg-white/10 hover:text-white">
                 <i class="fa fa-sign-out w-4"></i> Logout
             </a>

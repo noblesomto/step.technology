@@ -24,16 +24,46 @@ class AdminController extends Controller
     public function index()
     {
         $title = "Admin Section -" . config('global.site_title');
+
         $count_users = User::count();
-        $count_tvshow = "7";
+        $count_verified_users = User::where('acc_status', 1)->count();
+        $count_pending_verification = User::where('acc_status', 0)->count();
         $count_blog = Blog::count();
         $count_events = Event::count();
+
+        $paymentCounts = DB::table('payments')
+            ->selectRaw('COUNT(*) as total, SUM(CASE WHEN payment_status = 1 THEN 1 ELSE 0 END) as confirmed, SUM(CASE WHEN payment_status = 0 THEN 1 ELSE 0 END) as pending')
+            ->first();
 
         $examCounts = DB::table('exam_scores')
             ->selectRaw('COUNT(*) as total, SUM(CASE WHEN status = "approved" THEN 1 ELSE 0 END) as approved, SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) as pending')
             ->first();
 
-        return view('backend.index', compact('title','count_users','count_tvshow','count_blog','count_events','examCounts'));
+        $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
+
+        $recentPendingPayments = DB::table('payments')
+            ->join('users', 'users.user_id', '=', 'payments.user_id')
+            ->where('payments.payment_status', 0)
+            ->select('users.first_name', 'users.last_name', 'users.user_id', 'payments.payment_amount', 'payments.created_at')
+            ->orderBy('payments.created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        $recentBlogPosts = Blog::orderBy('created_at', 'desc')->take(4)->get();
+
+        return view('backend.index', compact(
+            'title',
+            'count_users',
+            'count_verified_users',
+            'count_pending_verification',
+            'count_blog',
+            'count_events',
+            'paymentCounts',
+            'examCounts',
+            'recentUsers',
+            'recentPendingPayments',
+            'recentBlogPosts'
+        ));
     }
 
     

@@ -18,10 +18,10 @@
             </ul>
             <div class="flex items-center gap-3">
                 <span class="hidden sm:inline mr-1">Stay Connected:</span>
-                <a href="#" class="hover:text-step-accent" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
-                <a href="#" class="hover:text-step-accent" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+                <a href="{{ config('global.facebook_url', '#') }}" class="hover:text-step-accent" aria-label="Facebook" target="_blank" rel="noopener"><i class="fa fa-facebook"></i></a>
+                <a href="{{ config('global.twitter_url', '#') }}" class="hover:text-step-accent" aria-label="Twitter" target="_blank" rel="noopener"><i class="fa fa-twitter"></i></a>
                 <a href="#" class="hover:text-step-accent" aria-label="Google Plus"><i class="fa fa-google-plus"></i></a>
-                <a href="#" class="hover:text-step-accent" aria-label="LinkedIn"><i class="fa fa-linkedin"></i></a>
+                <a href="{{ config('global.linkedin_url', '#') }}" class="hover:text-step-accent" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fa fa-linkedin"></i></a>
             </div>
         </div>
     </div>

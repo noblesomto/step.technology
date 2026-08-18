@@ -26,10 +26,10 @@
                     <button type="submit" class="bg-step-accent px-4 rounded-r-md"><i class="fa fa-paper-plane"></i></button>
                 </form>
                 <div class="flex gap-3 mt-6">
-                    <a href="#" class="hover:text-step-accent" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
-                    <a href="#" class="hover:text-step-accent" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="{{ config('global.facebook_url', '#') }}" class="hover:text-step-accent" aria-label="Facebook" target="_blank" rel="noopener"><i class="fa fa-facebook"></i></a>
+                    <a href="{{ config('global.twitter_url', '#') }}" class="hover:text-step-accent" aria-label="Twitter" target="_blank" rel="noopener"><i class="fa fa-twitter"></i></a>
                     <a href="#" class="hover:text-step-accent" aria-label="Google Plus"><i class="fa fa-google-plus"></i></a>
-                    <a href="#" class="hover:text-step-accent" aria-label="LinkedIn"><i class="fa fa-linkedin"></i></a>
+                    <a href="{{ config('global.linkedin_url', '#') }}" class="hover:text-step-accent" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fa fa-linkedin"></i></a>
                     <a href="#" class="hover:text-step-accent" aria-label="Skype"><i class="fa fa-skype"></i></a>
                 </div>
             </div>

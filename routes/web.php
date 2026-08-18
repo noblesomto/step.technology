@@ -11,6 +11,7 @@ use App\Http\Controllers\DevPreviewController;
 use App\Http\Controllers\Exam\Admin\ManageExamController;
 use App\Http\Controllers\Exam\Admin\AdminController as ExamAdminController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,5 +116,10 @@ Route::get('/admin/questions/{id}/edit', [ManageExamController::class, 'edit'])-
 Route::put('/admin/questions/{id}', [ManageExamController::class, 'update'])->name('questions.update')->middleware('adminsession');
 Route::get('/admin/enrollments', [ExamAdminController::class, 'enrollments'])->middleware('adminsession');
 Route::get('/admin/exam-status/{id}/{status}', [ExamAdminController::class, 'exam_status'])->middleware('adminsession');
+
+// Settings
+Route::get('/admin/settings', [SettingsController::class, 'edit'])->middleware('adminsession');
+Route::put('/admin/settings', [SettingsController::class, 'update'])->middleware('adminsession');
+Route::post('/admin/settings/password', [SettingsController::class, 'updatePassword'])->middleware('adminsession');
 
 
