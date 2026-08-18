@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Admin;
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -43,11 +44,15 @@ class SettingsTest extends TestCase
             'facebook_url' => 'https://facebook.com/test',
             'twitter_url' => '',
             'linkedin_url' => '',
+            'payment_account_name' => 'Test Society',
+            'payment_account_number' => '1234567890',
+            'payment_bank_name' => 'Test Bank',
         ]);
 
         $response->assertRedirect('/admin/settings');
         $this->assertEquals('New Site Name', Setting::get('site_name'));
         $this->assertEquals('https://facebook.com/test', Setting::get('facebook_url'));
+        $this->assertEquals('Test Bank', Setting::get('payment_bank_name'));
 
         // config('global.*') itself is only re-derived when AppServiceProvider
         // boots (i.e. on the next real request) — not mid-test, since Laravel's
@@ -114,5 +119,25 @@ class SettingsTest extends TestCase
 
         $response->assertSessionHasErrors('password');
         $this->assertTrue(Hash::check('old-password', $admin->fresh()->password));
+    }
+
+    public function test_member_dashboard_shows_configured_payment_bank_details(): void
+    {
+        Setting::set('payment_account_name', 'Test Configured Society');
+        Setting::set('payment_account_number', '9988776655');
+        Setting::set('payment_bank_name', 'Configured Test Bank');
+        // Normally re-applied by AppServiceProvider::boot() on the next
+        // real request; called explicitly here since this test's app is
+        // already booted before the settings above are written.
+        Setting::applyToConfig();
+
+        $user = User::factory()->create(['user_type' => 'Young Professional']);
+
+        $response = $this->withSession(['user_id' => $user->user_id])->get('/user/membership');
+
+        $response->assertStatus(200);
+        $response->assertSee('Test Configured Society');
+        $response->assertSee('9988776655');
+        $response->assertSee('Configured Test Bank');
     }
 }

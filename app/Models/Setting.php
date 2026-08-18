@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class Setting extends Model
 {
@@ -28,5 +29,26 @@ class Setting extends Model
     {
         static::updateOrCreate(['key' => $key], ['value' => $value]);
         Cache::forget('settings.all');
+    }
+
+    /**
+     * Merge saved settings into config('global.*'). Called once per
+     * request from AppServiceProvider::boot(); also callable directly
+     * (e.g. in tests, after Setting::set()) to re-apply overrides
+     * without a fresh application boot. Defensive since this can run
+     * before the settings table is migrated.
+     */
+    public static function applyToConfig(): void
+    {
+        try {
+            if (Schema::hasTable('settings')) {
+                $overrides = static::allCached();
+                if (!empty($overrides)) {
+                    config(['global' => array_merge(config('global'), $overrides)]);
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fall back to config/global.php defaults.
+        }
     }
 }

@@ -18,6 +18,9 @@ class SettingsController extends Controller
         'facebook_url',
         'twitter_url',
         'linkedin_url',
+        'payment_account_name',
+        'payment_account_number',
+        'payment_bank_name',
     ];
 
     public function edit(Request $request)
@@ -44,6 +47,9 @@ class SettingsController extends Controller
             'facebook_url' => 'nullable|url|max:255',
             'twitter_url' => 'nullable|url|max:255',
             'linkedin_url' => 'nullable|url|max:255',
+            'payment_account_name' => 'required|string|max:255',
+            'payment_account_number' => 'required|string|max:50',
+            'payment_bank_name' => 'required|string|max:255',
         ]);
 
         foreach ($this->keys as $key) {

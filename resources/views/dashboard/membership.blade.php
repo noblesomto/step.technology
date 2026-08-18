@@ -25,9 +25,9 @@
             @elseif ($user->user_type == "Corporate Organisation")
                 <h4 class="font-step-heading font-bold text-lg text-gray-900 mb-2">Amount: &#8358;25,000</h4>
             @endif
-            <p class="text-sm text-gray-600">Account Name: Society for Technology &amp; Energy Professionals</p>
-            <p class="text-sm text-gray-600">Account Number: 1017242328</p>
-            <p class="text-sm text-gray-600">Bank: Zenith</p>
+            <p class="text-sm text-gray-600">Account Name: {{ config('global.payment_account_name') }}</p>
+            <p class="text-sm text-gray-600">Account Number: {{ config('global.payment_account_number') }}</p>
+            <p class="text-sm text-gray-600">Bank: {{ config('global.payment_bank_name') }}</p>
         </div>
 
         <hr class="border-gray-100 mb-6">

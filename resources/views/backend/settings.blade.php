@@ -76,6 +76,28 @@
                 </div>
             </div>
 
+            <hr class="border-gray-100">
+
+            <p class="text-sm font-semibold text-gray-700">Membership Payment Details</p>
+            <p class="text-xs text-gray-400 -mt-3">Shown to members on the "Membership Payment" page when they're asked to pay their dues.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1.5">Account Name</label>
+                    @if ($errors->has('payment_account_name')) <span class="block text-red-600 text-sm mb-1">{{ $errors->first('payment_account_name') }}</span> @endif
+                    <input type="text" name="payment_account_name" value="{{ old('payment_account_name', $settings['payment_account_name']) }}" required class="w-full h-11 rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-3">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1.5">Account Number</label>
+                    @if ($errors->has('payment_account_number')) <span class="block text-red-600 text-sm mb-1">{{ $errors->first('payment_account_number') }}</span> @endif
+                    <input type="text" name="payment_account_number" value="{{ old('payment_account_number', $settings['payment_account_number']) }}" required class="w-full h-11 rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-3">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1.5">Bank Name</label>
+                    @if ($errors->has('payment_bank_name')) <span class="block text-red-600 text-sm mb-1">{{ $errors->first('payment_bank_name') }}</span> @endif
+                    <input type="text" name="payment_bank_name" value="{{ old('payment_bank_name', $settings['payment_bank_name']) }}" required class="w-full h-11 rounded-md border-gray-300 focus:border-step-primary focus:ring-step-primary text-sm px-3">
+                </div>
+            </div>
+
             <button type="submit" class="bg-step-primary text-white font-step-heading font-semibold px-6 py-2.5 rounded-full hover:bg-step-accent transition-colors">Save Settings</button>
         </form>
     </div>
