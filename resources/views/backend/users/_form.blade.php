@@ -93,7 +93,10 @@
             <option value="Confirmed" @selected($val('member_status') === 'Confirmed')>Confirmed</option>
         </select>
     </div>
-    <div></div>
+    <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Reg/License No</label>
+        <input type="text" value="{{ $user->reg_no ?? 'Not yet issued — generate from Reg Numbers once payment is confirmed and the exam is approved' }}" disabled class="w-full h-11 rounded-md border-gray-200 bg-gray-50 text-sm px-3 text-gray-500">
+    </div>
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

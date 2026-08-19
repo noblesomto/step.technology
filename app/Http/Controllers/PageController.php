@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Blog;
 use App\Models\Event;
+use App\Models\User;
+use App\Models\Journal;
 use App\Models\ConferenceRegistration;
 use Mail;
 use App\Rules\ReCaptcha;
@@ -49,6 +51,27 @@ class PageController extends Controller
         return view('frontend.membership', compact('title'));
     }
 
+    public function verifyMembership(Request $request)
+    {
+        $title = "Verify Membership - " . config('global.site_title');
+        $search = trim((string) $request->input('q'));
+        $results = collect();
+
+        if ($search !== '') {
+            $results = User::whereNotNull('reg_no')
+                ->where(function ($query) use ($search) {
+                    $query->where('reg_no', 'LIKE', '%'.$search.'%')
+                        ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%'.$search.'%'])
+                        ->orWhere('company_name', 'LIKE', '%'.$search.'%');
+                })
+                ->orderBy('first_name')
+                ->limit(50)
+                ->get();
+        }
+
+        return view('frontend.verify-membership', compact('title', 'search', 'results'));
+    }
+
     public function trainings()
     {   
         $title = "Trainings - " . config('global.site_title');
@@ -62,9 +85,34 @@ class PageController extends Controller
     }
 
     public function journal_publication()
-    {   
+    {
         $title = "Journals & Publications - " . config('global.site_title');
-        return view('frontend.journal-publication', compact('title'));
+        $journals = Journal::approved()
+            ->with('author')
+            ->orderBy('published_at', 'desc')
+            ->paginate(9);
+
+        return view('frontend.journal-publication', compact('title', 'journals'));
+    }
+
+    public function journal_details($id, $slug)
+    {
+        $journal = Journal::approved()->with('author')->findOrFail($id);
+
+        if ($journal->slug !== $slug) {
+            return redirect("/journal-publication/{$journal->id}/{$journal->slug}", 301);
+        }
+
+        $journal->increment('views');
+
+        $title = $journal->title . " - " . config('global.site_title');
+        $recent = Journal::approved()
+            ->where('id', '!=', $journal->id)
+            ->orderBy('published_at', 'desc')
+            ->limit(4)
+            ->get();
+
+        return view('frontend.journal-details', compact('title', 'journal', 'recent'));
     }
 
     public function contact(Request $request)

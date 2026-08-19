@@ -80,7 +80,7 @@ class AdminController extends Controller
     }
 
     public function confirm_payment($user_id)
-    {   
+    {
         $user = User::where('user_id', $user_id)->first();
 
         //dd($user->first_name);
@@ -114,7 +114,8 @@ class AdminController extends Controller
                     $q->where('first_name', 'LIKE', '%'.$search.'%')
                       ->orWhere('last_name', 'LIKE', '%'.$search.'%')
                       ->orWhere('email', 'LIKE', '%'.$search.'%')
-                      ->orWhere('phone', 'LIKE', '%'.$search.'%');
+                      ->orWhere('phone', 'LIKE', '%'.$search.'%')
+                      ->orWhere('reg_no', 'LIKE', '%'.$search.'%');
                 });
             })
             ->orderBy('created_at', 'desc')
@@ -227,6 +228,77 @@ class AdminController extends Controller
         $user->update($data);
 
         return redirect('/admin/users/'.$user_id)->with('status', ['text' => 'User updated successfully', 'type' => 'success']);
+    }
+
+    public function regNumbers(Request $request)
+    {
+        $title = "Reg/License Numbers -" . config('global.site_name');
+        $search = $request->input('search');
+
+        $query = $this->regNoEligibleQuery()
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($q2) use ($search) {
+                    $q2->where('first_name', 'LIKE', '%'.$search.'%')
+                       ->orWhere('last_name', 'LIKE', '%'.$search.'%')
+                       ->orWhere('email', 'LIKE', '%'.$search.'%');
+                });
+            });
+
+        $eligibleCount = (clone $query)->count();
+        $eligible = $query->orderBy('first_name')->paginate(30)->withQueryString();
+
+        $assignedCount = User::whereNotNull('reg_no')->count();
+
+        return view('backend.reg-numbers.index', compact('title', 'eligible', 'eligibleCount', 'assignedCount', 'search'));
+    }
+
+    public function generateRegNumbers(Request $request)
+    {
+        $request->validate([
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'string',
+        ]);
+
+        // Re-run the eligibility check server-side rather than trusting the
+        // posted ids — a user could otherwise become ineligible (or already
+        // have a reg_no) between page load and submit.
+        $users = $this->regNoEligibleQuery()
+            ->whereIn('user_id', $request->input('user_ids'))
+            ->orderBy('created_at')
+            ->get();
+
+        foreach ($users as $user) {
+            $user->update(['reg_no' => User::nextRegNo()]);
+        }
+
+        $count = $users->count();
+
+        return redirect('/admin/reg-numbers')->with('status', [
+            'text' => $count > 0 ? $count.' Reg/License No'.($count === 1 ? '' : 's').' generated' : 'No eligible users were selected',
+            'type' => $count > 0 ? 'success' : 'danger',
+        ]);
+    }
+
+    /**
+     * Users are only eligible for a Reg/License No once their membership
+     * payment is confirmed AND an exam sitting has been approved for them.
+     */
+    protected function regNoEligibleQuery()
+    {
+        return User::query()
+            ->whereNull('reg_no')
+            ->whereExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('payments')
+                    ->whereColumn('payments.user_id', 'users.user_id')
+                    ->where('payments.payment_status', 1);
+            })
+            ->whereExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('exam_scores')
+                    ->whereColumn('exam_scores.user_id', 'users.user_id')
+                    ->where('exam_scores.status', 'approved');
+            });
     }
 
     public function updateUserStatus($user_id, $status)

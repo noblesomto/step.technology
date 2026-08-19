@@ -1,42 +1,26 @@
+@php
+    $flash = null;
+    foreach (['success' => 'success', 'error' => 'danger', 'warning' => 'warning', 'info' => 'info'] as $key => $type) {
+        if (session()->has($key)) {
+            $flash = ['text' => session($key), 'type' => $type];
+            break;
+        }
+    }
+@endphp
 
-
-@if ($message = Session::get('success'))
-<div class="bg-green-100 flex justify-center items-center w-full h-16 text-base my-2 rounded-lg p-3 ">
-	<h4 class="font-semibold text-lg text-green-900">{{ $message }}</h4>
-</div>
+@if ($flash)
+    <div class="mb-6 rounded-md px-4 py-3 text-sm {{ [
+        'success' => 'bg-green-50 text-green-700 border border-green-200',
+        'danger' => 'bg-red-50 text-red-700 border border-red-200',
+        'warning' => 'bg-yellow-50 text-yellow-700 border border-yellow-200',
+        'info' => 'bg-step-primary/5 text-step-primary border border-step-primary/20',
+    ][$flash['type']] }}">
+        {{ $flash['text'] }}
+    </div>
 @endif
-
-
-@if ($message = Session::get('error'))
-<div class="bg-red-100 flex justify-center items-center w-full h-16 text-base my-2 rounded-lg p-3 ">
-	<h4 class="font-semibold text-lg text-red-900">{{ $message }}</h4>
-</div>
-@endif
-
-
-@if ($message = Session::get('warning'))
-<div class="alert alert-warning alert-block">
-	<button type="button" class="close" data-dismiss="alert">×</button>	
-	<strong>{{ $message }}</strong>
-</div>
-@endif
-
-
-@if ($message = Session::get('info'))
-<div class="alert alert-info alert-block">
-	<button type="button" class="close" data-dismiss="alert">×</button>	
-	<strong>{{ $message }}</strong>
-</div>
-@endif
-
 
 @if ($errors->any())
-<div class="alert alert-danger">
-	<button type="button" class="close" data-dismiss="alert">×</button>	
-	Please check the form below for errors
-</div>
+    <div class="mb-6 rounded-md px-4 py-3 text-sm bg-red-50 text-red-700 border border-red-200">
+        Please check the form below for errors.
+    </div>
 @endif
-
-
-
-

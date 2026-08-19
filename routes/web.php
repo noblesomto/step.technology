@@ -13,6 +13,8 @@ use App\Http\Controllers\Exam\Admin\AdminController as ExamAdminController;
 use App\Http\Controllers\Exam\Admin\ExamBatchController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\Admin\JournalController as AdminJournalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +47,9 @@ Route::get('/step-support', [PageController::class, 'support']);
 Route::get('/memberships', [PageController::class, 'membership']);
 Route::get('/trainings', [PageController::class, 'trainings']);
 Route::get('/journal-publication', [PageController::class, 'journal_publication']);
+Route::get('/journal-publication/{id}/{slug}', [PageController::class, 'journal_details']);
 Route::get('/certifications', [PageController::class, 'certifications']);
+Route::get('/verify-membership', [PageController::class, 'verifyMembership']);
 Route::any('/contact', [PageController::class, 'contact']);
 Route::get('/blog', [PageController::class, 'blog']);
 Route::get('/blog/{blog_id}/{slug}', [PageController::class, 'blog_detials']);
@@ -80,6 +84,13 @@ Route::get('/admin/users/{user_id}/edit', [AdminController::class, 'editUser'])-
 Route::put('/admin/users/{user_id}', [AdminController::class, 'updateUser'])->middleware('adminsession');
 Route::delete('/admin/users/{user_id}', [AdminController::class, 'destroyUser'])->middleware('adminsession');
 Route::put('/admin/users/{user_id}/status/{status}', [AdminController::class, 'updateUserStatus'])->middleware('adminsession');
+Route::get('/admin/reg-numbers', [AdminController::class, 'regNumbers'])->middleware('adminsession');
+Route::post('/admin/reg-numbers/generate', [AdminController::class, 'generateRegNumbers'])->middleware('adminsession');
+Route::get('/admin/journals', [AdminJournalController::class, 'index'])->middleware('adminsession');
+Route::get('/admin/journals/{id}', [AdminJournalController::class, 'show'])->middleware('adminsession');
+Route::put('/admin/journals/{id}/status/{status}', [AdminJournalController::class, 'updateStatus'])->middleware('adminsession');
+Route::post('/admin/journals/bulk-status', [AdminJournalController::class, 'bulkUpdateStatus'])->middleware('adminsession');
+Route::delete('/admin/journals/{id}', [AdminJournalController::class, 'destroy'])->middleware('adminsession');
 Route::get('/admin/logout', [AdminController::class, 'logout'])->middleware('adminsession');
 
 
@@ -108,6 +119,12 @@ Route::post('/ckeditor/upload', [BlogController::class, 'upload'])->name('ckedit
 Route::get('/user/index', [UserController::class, 'index'])->middleware('usersession');
 Route::any('/user/profile', [UserController::class, 'profile'])->middleware('usersession');
 Route::any('/user/membership', [UserController::class, 'membership'])->middleware('usersession');
+Route::get('/user/journals', [JournalController::class, 'index'])->middleware('usersession');
+Route::get('/user/journals/create', [JournalController::class, 'create'])->middleware('usersession');
+Route::post('/user/journals', [JournalController::class, 'store'])->middleware('usersession');
+Route::get('/user/journals/{id}/edit', [JournalController::class, 'edit'])->middleware('usersession');
+Route::put('/user/journals/{id}', [JournalController::class, 'update'])->middleware('usersession');
+Route::delete('/user/journals/{id}', [JournalController::class, 'destroy'])->middleware('usersession');
 Route::get('/user/logout', [UserController::class, 'logout'])->middleware('usersession');
 
 //Payment Confirmation

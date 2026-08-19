@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\DB;
 use App\Mail\RegisterMail;
@@ -274,11 +273,11 @@ class AccountController extends Controller
             
             $email = $request->email;
             $password = $request->password;
-
             $login = User::where('email', $email)
                         ->where('acc_status', 1)
                         ->first();
-            if ($login) {
+
+            if ($login){
                 if (Hash::check($password, $login->password)) {
                     $user_id = $login->user_id;
                     $request->session()->put('user_id', $user_id);
@@ -373,38 +372,6 @@ class AccountController extends Controller
       
             return redirect("login")->with('status',['text'=>'Your password was successfully updated, Please Login ','type'=>'success']);
         }
-       
-    }
 
-
-    public function adminlogin(Request $request)
-    {
-        $title = "Admin Login" . config('global.site_title');
-
-        if ($request->isMethod('POST')) {
-            $request->validate([
-                'username' => 'required',
-                'password' => 'required|min:4',
-            ]);
-            
-            $username = $request->username;
-            $password = $request->password;
-
-            $login = Admin::where('username', $username)
-               ->where('password', md5($password))
-               ->first();
-            if ($login) {
-                $admin_id = $login->admin_id;
-                $request->session()->put('admin_id', $admin_id);
-
-               return redirect()->action([AdminController::class, 'index']);
-            }
-      
-            return redirect("adminlogin")->with('status','Opps! You have entered invalid credentials');
-        }
-
-        if ($request->isMethod('GET')) {
-            return view('frontend.admin', compact('title'));
-        }
     }
 }

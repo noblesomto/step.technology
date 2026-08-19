@@ -36,6 +36,7 @@ class User extends Authenticatable
         'school_dept',
         'member_status',
         'step_id',
+        'reg_no',
         'email',
         'password',
         'profession',
@@ -64,4 +65,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    const REG_NO_PREFIX = 'STEP/CORETEP/';
+
+    /**
+     * Next incremental REG/LICENSE NO, e.g. STEP/CORETEP/0001.
+     * Reads the highest existing sequence number rather than counting rows,
+     * so it stays correct even if a registration is later deleted.
+     */
+    public static function nextRegNo(): string
+    {
+        $lastSeq = static::query()
+            ->where('reg_no', 'like', self::REG_NO_PREFIX.'%')
+            ->selectRaw('MAX(CAST(SUBSTRING_INDEX(reg_no, "/", -1) AS UNSIGNED)) as last_seq')
+            ->value('last_seq');
+
+        return self::REG_NO_PREFIX.sprintf('%04d', ($lastSeq ?? 0) + 1);
+    }
 }

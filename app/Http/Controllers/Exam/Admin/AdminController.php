@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Exam\Admin;
 use App\Http\Controllers\Controller;
 use App\Exports\ExamScoresExport;
 use App\Mail\ExamResultApprovedMail;
-use App\Models\Admin;
 use App\Models\ExamBatch;
 use App\Models\ExamScore;
 use App\Models\User;
@@ -18,27 +17,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
-    public function index()
-    {
-        $title = "Admin Section - " . config('global.site_name');
-        $counts = DB::table('exam_scores')
-            ->selectRaw('
-                COUNT(*) as total,
-                SUM(CASE WHEN score > 20 THEN 1 ELSE 0 END) as above_20,
-                SUM(CASE WHEN score < 20 THEN 1 ELSE 0 END) as below_20,
-                SUM(CASE WHEN score = 20 THEN 1 ELSE 0 END) as equal_20
-            ')
-            ->first();
-
-            // Access the counts
-            $count_above_20 = $counts->above_20;
-            $count_below_20 = $counts->below_20;
-            $count_equal_20 = $counts->equal_20;
-            $total_count = $counts->total;
-            //dd($total_count);
-        return view('exam.backend.index', compact('title','total_count','count_above_20','count_below_20'));
-    }
-
     public function enrollments(Request $request)
     {
         $title = "Exam Enrollments - " . config('global.site_name');
@@ -223,12 +201,5 @@ class AdminController extends Controller
         $filename = ($batch ? \Illuminate\Support\Str::slug($batch->name) : 'all-batches') . '-exam-results.pdf';
 
         return $pdf->download($filename);
-    }
-
-    public function logout(Request $request)
-    {
-        $request->session()->forget('admin_id');
-        $request->session()->flush();
-        return redirect("admin")->with('status', ['text'=>'Logged out Successfully','type'=>'success']);
     }
 }

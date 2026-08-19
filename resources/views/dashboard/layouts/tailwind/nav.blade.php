@@ -1,4 +1,4 @@
-{{-- Param (optional): $active — 'dashboard' | 'profile' | 'membership' --}}
+{{-- Param (optional): $active — 'dashboard' | 'profile' | 'membership' | 'journals' --}}
 @php($active = $active ?? 'dashboard')
 
 {{-- Top bar --}}
@@ -37,6 +37,9 @@
         </a>
         <a href="/user/membership" class="flex items-center gap-3 px-4 py-2.5 rounded-md {{ $active === 'membership' ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
             <i class="fa fa-id-card w-4"></i> Membership
+        </a>
+        <a href="/user/journals" class="flex items-center gap-3 px-4 py-2.5 rounded-md {{ $active === 'journals' ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+            <i class="fa fa-book w-4"></i> Journals
         </a>
         <a href="/user/logout" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-white/70 hover:bg-white/10 hover:text-white">
             <i class="fa fa-sign-in w-4"></i> Logout

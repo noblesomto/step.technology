@@ -2,19 +2,13 @@
 
 namespace App\Http\Controllers\Exam;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Exam\Admin\AdminController;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Rules\ReCaptcha;
 use Mail;
 use Hash;
-use App\Mail\RegisterMail;
-use App\Mail\RegisterReferredMail;
 use App\Mail\Exam\NotifyMail;
 use App\Mail\PasswordMail;
 use App\Models\User;
-use App\Models\Admin;
 
 
 class AccountController extends Controller
@@ -112,16 +106,6 @@ class AccountController extends Controller
     }
 
 
-    public function account_status(Request $request)
-    {   
-        $title = "Account Status  " . config('global.site_title');
-        $user_id = $request->session()->get('user_id');
-        $user = User::where('user_id', $user_id)->first();
-               
-        return view('exam.frontend.account-status', compact('title','user'));
-    }
-
-
     public function resend_otp(Request $request)
     {
          
@@ -154,70 +138,6 @@ class AccountController extends Controller
       
             
     }
-
-    public function register(Request $request, $ref_id = null)
-    {   
-        $title = "Create an Account | " . config('global.site_name');
-
-        if ($request->isMethod('GET')) {
-            return view('exam.frontend.account.register', compact('title', 'ref_id'));
-        }
-
-         if ($request->isMethod('POST')) {
-
-            $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email' => 'required|email|unique:users',
-                'phone' => 'required|numeric|unique:users',
-                'password' => 'required|min:6',
-                'g-recaptcha-response' => ['required', new ReCaptcha],
-            ]);
-
-
-            $name = $request->input('first_name');
-            $user_id = rand(11111,99999);
-            $email = $request->input('email');
-            $token  = Str::random(40);
-
-            User::create([
-                'first_name'=> $request->input('first_name'),
-                'last_name'=> $request->input('last_name'),
-                'email'=> $request->input('email'),
-                'phone'=> $request->input('phone'),
-                'user_id'=> $user_id,
-                'ref_id'=> $ref_id,
-                'token'=> $token,
-                'acc_status'=> 0,
-                'acc_type'=> "User",
-                'password'=> Hash::make($request->input('password')),
-            ]);
-
-
-            $details = [
-                'user_id' => $user_id,
-                'token' => $token,
-                'name' => $name,
-            ];
-            
-            try {
-                if($ref_id == null){
-                    Mail::to($email)->send(new RegisterMail($details));
-                }else{
-                    Mail::to($email)->send(new RegisterMail($details));
-                }
-                
-                
-                return redirect("register")->with('success', 'Great, you have successfully registered, Please verify your email');
-
-            } catch (Throwable $e) {
-                
-                 return redirect("register")->with('error', 'Error!, Your account details could not be sent, please contact admin');
-            }    
-
-        }
-    }
-
 
     public function verifyaccount($user_id, $token)
     {       
@@ -317,35 +237,6 @@ class AccountController extends Controller
        
     }
 
-
-    public function adminlogin(Request $request)
-    {
-        $title = "Admin Section - " . config('global.site_name');
-
-        if ($request->isMethod('POST')) {
-            $request->validate([
-                'username' => 'required',
-                'password' => 'required|min:4',
-            ]);
-            
-            $username = $request->username;
-            $password = $request->password;
-
-            $login = Admin::where('username', $username)->first();
-            if ($login && Hash::check($password, $login->password)) {
-                $admin_id = $login->admin_id;
-                $request->session()->put('admin_id', $admin_id);
-
-               return redirect()->action([AdminController::class, 'index']);
-            }
-      
-            return redirect("admin")->with('status',['text'=>'Sorry! you enter wrong credentials ','type'=>'danger']);
-        }
-
-        if ($request->isMethod('GET')) {
-            return view('exam.frontend.admin', compact('title'));
-        }
-    }
 
     public function getIp(){
         if(!empty($_SERVER['HTTP_CLIENT_IP'])){

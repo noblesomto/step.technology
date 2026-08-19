@@ -2,6 +2,23 @@
 @include('frontend.layouts.tailwind.nav')
 @include('frontend.layouts.tailwind.hero')
 
+{{-- ================= VERIFY MEMBERSHIP ================= --}}
+<section class="bg-step-primary">
+    <div class="max-w-7xl mx-auto px-4 py-10">
+        <div class="text-center mb-6">
+            <h2 class="font-step-heading font-bold text-2xl sm:text-3xl text-white">Verify a STEP Registration</h2>
+            <p class="text-white/80 mt-2">Search by name or Reg/License No (e.g. STEP/CORETEP/0001) to confirm a member is registered.</p>
+        </div>
+        <form method="GET" action="/verify-membership" class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+            <div class="relative flex-1">
+                <input type="text" name="q" placeholder="Enter name or Reg/License No" class="w-full h-12 rounded-full border-0 focus:ring-2 focus:ring-step-accent text-sm pl-11 pr-4">
+                <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <button type="submit" class="h-12 bg-step-accent text-step-primary font-step-heading font-semibold px-8 rounded-full hover:bg-white transition-colors">Search</button>
+        </form>
+    </div>
+</section>
+
 {{-- ================= ABOUT STEP ================= --}}
 <section class="py-20">
     <div class="max-w-7xl mx-auto px-4">

@@ -47,6 +47,7 @@
             <div><dt class="text-gray-500">School</dt><dd class="font-medium text-gray-900 mt-0.5">{{ $user->school_name ?: '—' }}</dd></div>
             <div><dt class="text-gray-500">Address</dt><dd class="font-medium text-gray-900 mt-0.5">{{ $user->address ?: '—' }}</dd></div>
             <div><dt class="text-gray-500">City / State</dt><dd class="font-medium text-gray-900 mt-0.5">{{ $user->city ?: '—' }}{{ $user->state ? ', '.$user->state : '' }}</dd></div>
+            <div><dt class="text-gray-500">Reg/License No</dt><dd class="font-medium text-gray-900 mt-0.5">{{ $user->reg_no ?: '—' }}</dd></div>
             <div><dt class="text-gray-500">STEP ID</dt><dd class="font-medium text-gray-900 mt-0.5">{{ $user->step_id ?: '—' }}</dd></div>
             <div><dt class="text-gray-500">Registered</dt><dd class="font-medium text-gray-900 mt-0.5">{{ $user->created_at->format('j M Y') }}</dd></div>
         </dl>

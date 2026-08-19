@@ -6,7 +6,7 @@
     <div class="max-w-5xl mx-auto">
         <div class="flex flex-col justify-center items-center">
             <div class="text-center mb-3">
-                <img class="w-2/4" src="{{ asset('frontend/images/logo2.png') }}">
+                <img class="w-2/4" src="{{ asset('frontend/img/new-logo.png') }}">
             </div>
             <h3 class="text-xl md:text-[30px] font-semibold">Welcome to Exam Module Section</h3>
             
@@ -60,7 +60,7 @@
           </div>
 
           <div class="mt-8 flex justify-center text-sm">
-           Not registered yet? <a class="mx-2 font-black underline" href="/register">Create an account</a>
+           Not registered yet? <a class="mx-2 font-black underline" href="https://step.technology/register">Create an account</a>
           </div>
 
          

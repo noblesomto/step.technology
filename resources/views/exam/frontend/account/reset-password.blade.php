@@ -63,7 +63,7 @@
           </div>
 
           <div class="mt-8 flex justify-center text-sm">
-           Not registered yet? <a class="mx-2 font-black underline" href="/register">Create an account</a>
+           Not registered yet? <a class="mx-2 font-black underline" href="https://step.technology/register">Create an account</a>
           </div>
 
          

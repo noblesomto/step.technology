@@ -24,16 +24,31 @@
     </div>
 @endif
 
+@if ($user->reg_no)
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-step-primary text-white rounded-lg px-6 py-5">
+        <div>
+            <p class="text-white/70 text-xs font-step-heading font-semibold uppercase tracking-wider">Your Reg/License No</p>
+            <p class="font-step-heading font-bold text-2xl mt-1">{{ $user->reg_no }}</p>
+        </div>
+        <i class="fa fa-certificate text-3xl text-step-accent"></i>
+    </div>
+@else
+    <div class="mb-6 bg-gray-50 border border-gray-200 text-gray-600 rounded-md px-4 py-3 text-sm">
+        <i class="fa fa-info-circle text-step-primary"></i>
+        Your Reg/License No will be issued here once your membership payment is confirmed and your exam result is approved.
+    </div>
+@endif
+
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white rounded-lg border border-gray-200 p-6">
-        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Journals/Publications</h5>
+    <a href="/user/journals" class="block bg-white rounded-lg border border-gray-200 p-6 hover:border-step-primary transition-colors">
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">My Journals</h5>
         <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
                 <i class="fa fa-book text-step-primary"></i>
             </div>
-            <h6 class="font-step-heading font-bold text-xl text-gray-900">0</h6>
+            <h6 class="font-step-heading font-bold text-xl text-gray-900">{{ $journalsCount }}</h6>
         </div>
-    </div>
+    </a>
 
     <div class="bg-white rounded-lg border border-gray-200 p-6">
         <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Certifications Available</h5>
@@ -46,12 +61,12 @@
     </div>
 
     <div class="bg-white rounded-lg border border-gray-200 p-6">
-        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Membership ID</h5>
+        <h5 class="font-step-heading font-semibold text-sm text-gray-500 mb-3">Reg/License No</h5>
         <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-full bg-step-primary/10 flex items-center justify-center">
-                <i class="fa fa-eye text-step-primary"></i>
+                <i class="fa fa-id-badge text-step-primary"></i>
             </div>
-            <h6 class="font-step-heading font-bold text-xl text-gray-900">Pending...</h6>
+            <h6 class="font-step-heading font-bold {{ $user->reg_no ? 'text-xl' : 'text-sm' }} text-gray-900">{{ $user->reg_no ?: 'Pending...' }}</h6>
         </div>
     </div>
 </div>

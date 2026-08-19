@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Exam\PageController;
 use App\Http\Controllers\Exam\UserController;
 use App\Http\Controllers\Exam\AccountController;
 
@@ -31,16 +30,12 @@ Route::any('/admin', function () {
 
 // User Dashboard Section
 Route::get('/user/index', [UserController::class, 'index'])->name('user.index')->middleware('usersession');
-Route::any('/user/start-exam', [UserController::class, 'start_exam'])->name('exam.start')->middleware('usersession');
-Route::any('/user/exam-done', [UserController::class, 'exam_done'])->middleware('usersession');
-Route::any('/user/cancel-order/{id}', [UserController::class, 'cancel_order'])->middleware('usersession');
+Route::get('/user/start-exam', [UserController::class, 'start_exam'])->name('exam.start')->middleware('usersession');
+Route::post('/user/save-exam-progress', [UserController::class, 'saveProgress'])->name('user.save-exam-progress')->middleware('usersession');
+Route::post('/user/submit-exam', [UserController::class, 'submitExam'])->name('user.submit-exam')->middleware('usersession');
+Route::get('/user/exam-done', [UserController::class, 'exam_done'])->name('user.exam-done')->middleware('usersession');
 Route::any('/user/profile', [UserController::class, 'profile'])->middleware('usersession');
 Route::get('/user/logout', [UserController::class, 'logout'])->middleware('usersession');
-
-Route::get('user/start-exam', [UserController::class, 'start_exam'])->name('user.start-exam');
-Route::post('user/save-exam-progress', [UserController::class, 'saveProgress'])->name('user.save-exam-progress');
-Route::post('user/submit-exam', [UserController::class, 'submitExam'])->name('user.submit-exam');
-Route::get('user/exam-done', [UserController::class, 'exam_done'])->name('user.exam-done');
 
 // The entire admin section — dashboard, questions, enrollments — now lives
 // on the unified admin CMS at step.technology/admin/*. Redirect any old

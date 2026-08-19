@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Payment;
 use App\Models\User;
+use App\Models\Journal;
 use Session;
 
 class UserController extends Controller
@@ -15,8 +16,9 @@ class UserController extends Controller
         $title = "User Dashboard" . config('global.site_title');
         $user_id = $request->session()->get('user_id');
         $user = User::where('user_id', $user_id)->first();
-        
-        return view('dashboard.index', compact('title','user'));
+        $journalsCount = Journal::where('user_id', $user_id)->count();
+
+        return view('dashboard.index', compact('title','user','journalsCount'));
     }
 
     public function profile(Request $request)

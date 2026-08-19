@@ -1,4 +1,4 @@
-{{-- Param (optional): $active — 'dashboard' | 'blog' | 'events' | 'users' | 'payments' | 'questions' | 'enrollments' --}}
+{{-- Param (optional): $active — 'dashboard' | 'blog' | 'events' | 'journals' | 'users' | 'payments' | 'reg-numbers' | 'questions' | 'enrollments' --}}
 @php($active = $active ?? 'dashboard')
 
 {{-- Top bar --}}
@@ -58,11 +58,17 @@
             </div>
         </div>
 
+        <a href="/admin/journals" class="flex items-center gap-3 px-4 py-2.5 rounded-md {{ $active === 'journals' ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+            <i class="fa fa-book w-4"></i> Journals
+        </a>
         <a href="/admin/users" class="flex items-center gap-3 px-4 py-2.5 rounded-md {{ $active === 'users' ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
             <i class="fa fa-users w-4"></i> Users
         </a>
         <a href="/admin/payment" class="flex items-center gap-3 px-4 py-2.5 rounded-md {{ $active === 'payments' ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
             <i class="fa fa-credit-card w-4"></i> Payments
+        </a>
+        <a href="/admin/reg-numbers" class="flex items-center gap-3 px-4 py-2.5 rounded-md {{ $active === 'reg-numbers' ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+            <i class="fa fa-id-badge w-4"></i> Reg Numbers
         </a>
 
         <p class="px-4 pt-4 pb-1 text-xs uppercase tracking-wider text-white/40">Exam Portal</p>

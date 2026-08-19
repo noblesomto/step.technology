@@ -1,18 +1,18 @@
-@include('exam.frontend.components.layouts.header')
+@include('exam.frontend.layouts.header')
 
 
 <div class="bg-white h-screen">
 	
 
 <section class="w-full flex justify-center items-center h-24 border-b-2 border-b-gray-400 shadow-lg shadow-b-2.5 shadow-gray-300">
-	<a href="/"><img src="{{ asset('frontend/images/logo.svg') }}" class="h-9"></a>
+	<a href="/"><img src="{{ asset('frontend/img/new-logo.png') }}" class="h-9"></a>
 </section>
 
 <section class="w-full md:w-2/6 mx-auto bg-white p-10 mt-10 rounded-[20px] shadow-lg">
 	
 	<div class="w-full  mx-auto ">
 
-		@include('exam.frontend.components.layouts.flash-message')
+		@include('exam.frontend.components.flash-message')
 		<form method="POST" action="/authenticate">
 			@csrf
 		<div class="mb-5">
@@ -72,6 +72,6 @@
 
 
 
-@include('exam.frontend.components.layouts.footer')
+@include('exam.frontend.layouts.footer')
 
 

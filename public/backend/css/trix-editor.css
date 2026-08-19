@@ -1,0 +1,347 @@
+/* ============================================
+   CUSTOM TRIX EDITOR STYLES
+   Reusable across multiple projects
+   ============================================ */
+
+/* Custom Toolbar */
+.custom-toolbar {
+    background: #f9fafb;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px 8px 0 0;
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 4px;
+    padding-right: 8px;
+    border-right: 1px solid #d0d0d0;
+}
+
+.toolbar-group:last-child {
+    border-right: none;
+}
+
+.toolbar-btn {
+    padding: 8px 12px;
+    border: 1px solid #d0d0d0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    color: #333;
+}
+
+.toolbar-btn:hover {
+    background: #f0f0f0;
+    border-color: #4f46e5;
+}
+
+.toolbar-btn.active {
+    background: #4f46e5;
+    color: white;
+    border-color: #4f46e5;
+}
+
+.font-size-select {
+    padding: 6px 10px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+    color: #333;
+}
+
+.font-size-select:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+.color-picker-wrapper {
+    position: relative;
+}
+
+.color-picker {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Trix Editor Container */
+.trix-editor-wrapper {
+    margin-bottom: 25px;
+}
+
+/* Hide Default Trix Toolbar */
+trix-toolbar {
+    display: none !important;
+}
+
+/* Trix Editor Styling */
+trix-editor {
+    min-height: 400px;
+    border: 2px solid #e0e0e0;
+    border-radius: 0 0 8px 8px;
+    padding: 16px;
+    transition: border-color 0.3s;
+    background: white;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #1a1a1a;
+}
+
+trix-editor:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+trix-editor:empty:not(:focus)::before {
+    color: #999;
+}
+
+/* Font Size Classes */
+trix-editor .font-small {
+    font-size: 12px;
+}
+
+trix-editor .font-normal {
+    font-size: 16px;
+}
+
+trix-editor .font-large {
+    font-size: 20px;
+}
+
+trix-editor .font-xlarge {
+    font-size: 24px;
+}
+
+trix-editor .font-xxlarge {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+/* Text Alignment Classes */
+trix-editor .text-left {
+    text-align: left;
+}
+
+trix-editor .text-center {
+    text-align: center;
+}
+
+trix-editor .text-right {
+    text-align: right;
+}
+
+trix-editor .text-justify {
+    text-align: justify;
+}
+
+/* Headings in Editor */
+trix-editor h1 {
+    font-size: 2em;
+    font-weight: 700;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+}
+
+trix-editor h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+trix-editor h3 {
+    font-size: 1.25em;
+    font-weight: 600;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.4;
+}
+
+/* Lists in Editor */
+trix-editor ul,
+trix-editor ol {
+    margin: 0.5em 0;
+    padding-left: 2em;
+}
+
+trix-editor ul li,
+trix-editor ol li {
+    margin: 0.25em 0;
+}
+
+/* Links in Editor */
+trix-editor a {
+    color: #4f46e5;
+    text-decoration: underline;
+}
+
+trix-editor a:hover {
+    color: #4338ca;
+}
+
+/* Images in Editor */
+trix-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1em 0;
+}
+
+/* Blockquotes */
+trix-editor blockquote {
+    border-left: 4px solid #4f46e5;
+    padding-left: 1em;
+    margin: 1em 0;
+    color: #666;
+    font-style: italic;
+}
+
+/* Code blocks */
+trix-editor pre {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1em;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+trix-editor code {
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+/* Horizontal Rule */
+trix-editor hr {
+    border: none;
+    border-top: 2px solid #e0e0e0;
+    margin: 2em 0;
+}
+
+/* Attachment/File uploads styling */
+trix-editor .attachment {
+    margin: 1em 0;
+    padding: 1em;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #f9fafb;
+}
+
+trix-editor .attachment__caption {
+    font-size: 14px;
+    color: #666;
+    margin-top: 0.5em;
+}
+
+/* Loading state for attachments */
+trix-editor .attachment--preview {
+    opacity: 0.6;
+}
+
+/* Remove attachment progress bar styling if needed */
+trix-editor .attachment__progress {
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+trix-editor .attachment__progress--value {
+    background: #4f46e5;
+    height: 100%;
+    transition: width 0.3s;
+}
+
+/* Selection highlight */
+trix-editor ::selection {
+    background: #b3d4fc;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .custom-toolbar {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .toolbar-btn {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    .toolbar-group {
+        padding-right: 6px;
+    }
+
+    trix-editor {
+        min-height: 300px;
+        padding: 12px;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    .custom-toolbar {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .toolbar-btn {
+        background: #374151;
+        color: #f9fafb;
+        border-color: #4b5563;
+    }
+
+    .toolbar-btn:hover {
+        background: #4b5563;
+        border-color: #6366f1;
+    }
+
+    .toolbar-btn.active {
+        background: #6366f1;
+        color: white;
+        border-color: #6366f1;
+    }
+
+    .font-size-select {
+        background: #374151;
+        color: #f9fafb;
+        border-color: #4b5563;
+    }
+
+    .toolbar-group {
+        border-right-color: #4b5563;
+    }
+
+    trix-editor {
+        background: #1f2937;
+        color: #f9fafb;
+        border-color: #374151;
+    }
+
+    trix-editor:focus {
+        border-color: #6366f1;
+    }
+}

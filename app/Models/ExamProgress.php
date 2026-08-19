@@ -21,7 +21,9 @@ class ExamProgress extends Model
      */
     protected $fillable = [
         'user_id',
+        'exam_batch_id',
         'exam_session_id',
+        'question_ids',
         'start_time',
         'current_question',
         'time_remaining',
@@ -36,6 +38,7 @@ class ExamProgress extends Model
      */
     protected $casts = [
         'answers' => 'array',
+        'question_ids' => 'array',
         'start_time' => 'datetime',
         'last_saved_at' => 'datetime',
         'completed_at' => 'datetime',

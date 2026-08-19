@@ -6,6 +6,7 @@
     $eventsActive = request()->is('events*');
     $membershipActive = request()->is('memberships');
     $contactActive = request()->is('contact');
+    $verifyActive = request()->is('verify-membership');
 @endphp
 
 <header x-data="{ mobileOpen: false }">
@@ -81,7 +82,10 @@
                 <a href="/contact" class="{{ $contactActive ? 'text-step-primary font-semibold' : 'text-gray-700 hover:text-step-accent' }}">Contact Us</a>
             </nav>
 
-            <div class="hidden lg:block">
+            <div class="hidden lg:flex items-center gap-3">
+                <a href="/verify-membership" class="inline-flex items-center gap-2 border border-step-primary text-step-primary font-step-heading font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-step-primary hover:text-white transition-colors {{ $verifyActive ? 'bg-step-primary text-white' : '' }}">
+                    <i class="fa fa-search"></i> Verify Membership
+                </a>
                 <a href="/login" class="inline-block bg-step-primary text-white font-step-heading font-semibold text-sm px-6 py-2.5 rounded-full hover:bg-step-accent transition-colors">Login</a>
             </div>
 
@@ -105,6 +109,7 @@
             <a href="/events" class="block {{ $eventsActive ? 'text-step-primary font-semibold' : 'text-gray-700' }}">Events</a>
             <a href="/memberships" class="block {{ $membershipActive ? 'text-step-primary font-semibold' : 'text-gray-700' }}">Membership</a>
             <a href="/contact" class="block {{ $contactActive ? 'text-step-primary font-semibold' : 'text-gray-700' }}">Contact Us</a>
+            <a href="/verify-membership" class="block {{ $verifyActive ? 'text-step-primary font-semibold' : 'text-gray-700' }}">Verify Membership</a>
             <a href="/login" class="block bg-step-primary text-white text-center font-semibold px-6 py-2.5 rounded-full">Login</a>
         </nav>
     </div>

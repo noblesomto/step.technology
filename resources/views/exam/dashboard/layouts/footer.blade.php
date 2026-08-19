@@ -1,19 +1,12 @@
+    </div>
+</main>
 
+<footer class="lg:pl-64 border-t border-gray-200 bg-white">
+    <div class="px-6 py-4 text-sm text-gray-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <p>&copy; Copyright <strong>{{ config('global.site_title') }}</strong>. All Rights Reserved</p>
+        <p>Designed by <a href="https://noblecontracts.com/" class="text-step-primary hover:text-step-accent">Noble Contracts</a></p>
+    </div>
+</footer>
 
-<script>
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const menuButton = document.getElementById('menu-button');
-
-    menuButton.addEventListener('click', function () {
-        sidebar.classList.toggle('-translate-x-full');
-        overlay.classList.toggle('hidden');
-    });
-
-    overlay.addEventListener('click', function () {
-        sidebar.classList.add('-translate-x-full');
-        overlay.classList.add('hidden');
-    });
-</script>
 </body>
 </html>

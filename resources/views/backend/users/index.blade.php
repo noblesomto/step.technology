@@ -43,6 +43,7 @@
             <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
                 <tr>
                     <th class="px-4 py-3">Name</th>
+                    <th class="px-4 py-3">Reg/License No</th>
                     <th class="px-4 py-3">Email</th>
                     <th class="px-4 py-3">Phone</th>
                     <th class="px-4 py-3">Type</th>
@@ -56,6 +57,7 @@
                         <td class="px-4 py-3">
                             <a href="/admin/users/{{ $row->user_id }}" class="font-medium text-gray-900 hover:text-step-primary">{{ $row->first_name }} {{ $row->last_name }}</a>
                         </td>
+                        <td class="px-4 py-3 text-gray-600">{{ $row->reg_no ?: '—' }}</td>
                         <td class="px-4 py-3 text-gray-600">{{ $row->email }}</td>
                         <td class="px-4 py-3 text-gray-600">{{ $row->phone }}</td>
                         <td class="px-4 py-3 text-gray-600">{{ $row->user_type }}</td>
@@ -80,7 +82,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-10 text-center text-gray-400">No users found.</td>
+                        <td colspan="7" class="px-4 py-10 text-center text-gray-400">No users found.</td>
                     </tr>
                 @endforelse
             </tbody>

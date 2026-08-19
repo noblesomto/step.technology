@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+[x-cloak] {
+  display: none !important;
+}
+
 .btn {
   @apply font-bold px-6 rounded  text-[14px]/[40px];
 }
